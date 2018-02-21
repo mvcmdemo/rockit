@@ -4,8 +4,6 @@
     <head>
         <meta charset="utf-8">
         <link rel="stylesheet" href="lib/bootstrap/css/bootstrap.css">
-        <link rel="stylesheet" href="lib/bootstrap/css/bootstrap-grid.css">
-        <link rel="stylesheet" href="lib/bootstrap/css/bootstrap-reboot.css">
         <link rel="stylesheet" href="css/rockit.css">
 
         <link rel="icon" type="image/x-icon" href="img/logo.png">
@@ -13,15 +11,37 @@
         <title>ROCKit</title>
     </head>
 
-    <body ng-controller="rockitController">
-        <div>{{2/2}}</div>
+    <body ng-controller="rockitController" style="padding-top: 65px;">
+        <div class="container">
+            <nav class="navbar navbar-inverse bg-inverse fixed-top">
+                <div class="navbar-inner row">
+                    <a class="navbar-brand" href="#">
+                        <img src="/img/rockit.png" width="30" height="30" class="d-inline-block align-top" alt="">
+                        <span>ROCKIT</span>
+                    </a>
+                    <div style="left: 10%; position: absolute">
+                        <ul class="nav navbar-nav" style="flex-direction: row; ">
+                            <li class="nav-item">
+                                <a class="nav-link" href="#" style="padding-right: 24px; padding-left: 24px">Machines</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#" style="padding-right: 24px; padding-left: 24px">Users</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#" style="padding-right: 24px; padding-left: 24px">Groups</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
 
         <script src="lib/jquery-3.3.1.js"></script>
+        <script src="lib/tether.min.js"></script>
 
-        <script src="lib/angular.min.js"></script>
+        <script src="lib/angular-1.6.9/angular.js"></script>
+        <script src="lib/angular-1.6.9/angular-route.js"></script>
         <script src="lib/bootstrap/js/bootstrap.js"></script>
-        <script src="lib/bootstrap/js/bootstrap.bundle.js"></script>
-        <script src="lib/ui-bootstrap-tpls-2.5.0.min.js"></script>
 
         <script src="js/rockit.js"></script>
         <script src="js/controllers/rockitController.js"></script>
