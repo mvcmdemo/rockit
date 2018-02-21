@@ -1,5 +1,6 @@
 package com.rs.mv.rockit.controller;
 
+import com.rs.mv.rockit.Group;
 import com.rs.mv.rockit.dao.GroupDAO;
 import com.rs.mv.rockit.exception.DAOException;
 import org.springframework.beans.factory.annotation.Autowired;
