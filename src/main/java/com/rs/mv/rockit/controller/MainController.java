@@ -1,7 +1,9 @@
 package com.rs.mv.rockit.controller;
 
 import com.rs.mv.rockit.Group;
+import com.rs.mv.rockit.Machine;
 import com.rs.mv.rockit.dao.GroupDAO;
+import com.rs.mv.rockit.dao.MachineDAO;
 import com.rs.mv.rockit.exception.DAOException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,8 +17,14 @@ import java.time.LocalDateTime;
 
 @Controller
 public class MainController {
-    @Autowired
     private GroupDAO groupDAO;
+    private MachineDAO machineDAO;
+
+    @Autowired
+    public MainController(GroupDAO groupDAO, MachineDAO machineDAO) {
+        this.groupDAO = groupDAO;
+        this.machineDAO = machineDAO;
+    }
 
     @RequestMapping(value = "/healthcheck", method = {RequestMethod.GET, RequestMethod.HEAD})
     public ResponseEntity<ModelMap> healthCheck() {
@@ -39,7 +47,11 @@ public class MainController {
         ModelMap resp = new ModelMap();
         ResponseEntity<ModelMap> response;
         try {
-            resp.put("groups", groupDAO.getAll());
+            //resp.put("groups", groupDAO.getAll());
+            Machine m = new Machine();
+            m.setHost("localhost");
+            m.setDescription("HP with UniData 8.2.1");
+            machineDAO.save(m);
             resp.put("status", "ok");
             response = ResponseEntity.ok(resp);
         } catch (DAOException daoe) {

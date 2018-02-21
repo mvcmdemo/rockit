@@ -1,6 +1,5 @@
 package com.rs.mv.rockit.dao;
 
-import com.rs.mv.rockit.Group;
 import com.rs.mv.rockit.Machine;
 import com.rs.mv.rockit.exception.DAOException;
 import org.hibernate.Session;
@@ -11,41 +10,41 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class GroupDAO {
+public class MachineDAO {
     private SessionFactory sessionFactory;
 
     @Autowired
-    public GroupDAO(SessionFactory sessionFactory) {
+    public MachineDAO(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
 
-    public List<Group> getAll() throws DAOException {
-        List<Group> groups;
+    public List<Machine> getAll() throws DAOException {
+        List<Machine> machines;
         try (Session session = sessionFactory.openSession()) {
-            groups = session.createQuery("from Group ", Group.class).list();
+            machines = session.createQuery("from Machine ", Machine.class).list();
         } catch (Exception e) {
-            throw new DAOException("Error listing groups", e);
+            throw new DAOException("Error listing machines", e);
         }
-        return groups;
+        return machines;
     }
 
-    public void save(Group group) throws DAOException {
+    public void save(Machine machine) throws DAOException {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
-            session.saveOrUpdate(group);
+            session.saveOrUpdate(machine);
             session.getTransaction().commit();
         } catch (Exception e) {
-            throw new DAOException("Error saving group", e);
+            throw new DAOException("Error saving machine", e);
         }
     }
 
-    public void delete(Group group) throws DAOException {
+    public void delete(Machine machine) throws DAOException {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
-            session.delete(group);
+            session.delete(machine);
             session.getTransaction().commit();
         } catch (Exception e) {
-            throw new DAOException("Error deleting group", e);
+            throw new DAOException("Error deleting machine", e);
         }
     }
 }

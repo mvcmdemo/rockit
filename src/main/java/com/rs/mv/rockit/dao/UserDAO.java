@@ -1,7 +1,6 @@
 package com.rs.mv.rockit.dao;
 
-import com.rs.mv.rockit.Group;
-import com.rs.mv.rockit.Machine;
+import com.rs.mv.rockit.User;
 import com.rs.mv.rockit.exception.DAOException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -11,41 +10,41 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class GroupDAO {
+public class UserDAO {
     private SessionFactory sessionFactory;
 
     @Autowired
-    public GroupDAO(SessionFactory sessionFactory) {
+    public UserDAO(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
 
-    public List<Group> getAll() throws DAOException {
-        List<Group> groups;
+    public List<User> getAll() throws DAOException {
+        List<User> users;
         try (Session session = sessionFactory.openSession()) {
-            groups = session.createQuery("from Group ", Group.class).list();
+            users = session.createQuery("from User ", User.class).list();
         } catch (Exception e) {
-            throw new DAOException("Error listing groups", e);
+            throw new DAOException("Error listing users", e);
         }
-        return groups;
+        return users;
     }
 
-    public void save(Group group) throws DAOException {
+    public void save(User user) throws DAOException {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
-            session.saveOrUpdate(group);
+            session.saveOrUpdate(user);
             session.getTransaction().commit();
         } catch (Exception e) {
-            throw new DAOException("Error saving group", e);
+            throw new DAOException("Error saving user", e);
         }
     }
 
-    public void delete(Group group) throws DAOException {
+    public void delete(User user) throws DAOException {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
-            session.delete(group);
+            session.delete(user);
             session.getTransaction().commit();
         } catch (Exception e) {
-            throw new DAOException("Error deleting group", e);
+            throw new DAOException("Error deleting user", e);
         }
     }
 }
