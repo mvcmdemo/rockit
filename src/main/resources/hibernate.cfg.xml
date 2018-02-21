@@ -7,14 +7,15 @@
         <property name="hibernate.connection.driver_class">org.apache.derby.jdbc.EmbeddedDriver</property>
         <property name="hibernate.connection.username">admin</property>
         <property name="hibernate.connection.password">admin</property>
-        <property name="hibernate.connection.url">jdbc:derby:data</property>
+        <property name="hibernate.connection.url">jdbc:derby:data;create=true</property>
         <property name="show_sql">true</property>
         <property name="hibernate.dialect">org.hibernate.dialect.DerbyTenSevenDialect</property>
+        <property name="hibernate.hbm2ddl.auto">update</property>
 
         <mapping package="com.rs.mv.rockit"/>
         <mapping class="com.rs.mv.rockit.Group"/>
+        <mapping class="com.rs.mv.rockit.Machine"/>
+        <mapping class="com.rs.mv.rockit.User"/>
 
-        <!-- DB schema will be updated if needed -->
-        <!-- <property name="hbm2ddl.auto">update</property> -->
     </session-factory>
 </hibernate-configuration>
