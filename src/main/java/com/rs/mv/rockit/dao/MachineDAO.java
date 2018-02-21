@@ -28,6 +28,16 @@ public class MachineDAO {
         return machines;
     }
 
+    public Machine getById(long id) throws DAOException {
+        Machine machine;
+        try (Session session = sessionFactory.openSession()) {
+            machine = session.get(Machine.class, id);
+        } catch (Exception e) {
+            throw new DAOException("Error loading machine", e);
+        }
+        return machine;
+    }
+
     public void save(Machine machine) throws DAOException {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
@@ -47,4 +57,10 @@ public class MachineDAO {
             throw new DAOException("Error deleting machine", e);
         }
     }
+
+    public void deleteById(long id) throws DAOException {
+        Machine machine = getById(id);
+        delete(machine);
+    }
+
 }

@@ -1,6 +1,5 @@
 package com.rs.mv.rockit.controller;
 
-import com.rs.mv.rockit.Group;
 import com.rs.mv.rockit.Machine;
 import com.rs.mv.rockit.dao.GroupDAO;
 import com.rs.mv.rockit.dao.MachineDAO;
@@ -10,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -42,21 +43,64 @@ public class MainController {
         return "index";
     }
 
-    @RequestMapping(value = "/test", method = {RequestMethod.GET, RequestMethod.HEAD})
-    public ResponseEntity<ModelMap> test() {
+    @RequestMapping(value = "/machines", method = {RequestMethod.GET, RequestMethod.HEAD})
+    public ResponseEntity<ModelMap> getMachines() {
         ModelMap resp = new ModelMap();
         ResponseEntity<ModelMap> response;
         try {
-            //resp.put("groups", groupDAO.getAll());
-            Machine m = new Machine();
-            m.setHost("localhost");
-            m.setDescription("HP with UniData 8.2.1");
-            machineDAO.save(m);
+            resp.put("machines", machineDAO.getAll());
             resp.put("status", "ok");
             response = ResponseEntity.ok(resp);
         } catch (DAOException daoe) {
             resp.put("status", "error");
             resp.put("error", daoe.getMessage());
+            response = ResponseEntity.ok(resp);
+        }
+        return response;
+    }
+
+    @RequestMapping(value = "/machines", method = {RequestMethod.POST, RequestMethod.PUT, RequestMethod.HEAD})
+    public ResponseEntity<ModelMap> saveMachine(@RequestBody Machine machine) {
+        ModelMap resp = new ModelMap();
+        ResponseEntity<ModelMap> response;
+        try {
+            machineDAO.save(machine);
+            resp.put("status", "ok");
+            response = ResponseEntity.ok(resp);
+        } catch (DAOException daoe) {
+            resp.put("status", "error");
+            resp.put("error", daoe.getMessage());
+            response = ResponseEntity.ok(resp);
+        }
+        return response;
+    }
+
+    @RequestMapping(value = "/machines/{id}", method = {RequestMethod.DELETE, RequestMethod.HEAD})
+    public ResponseEntity<ModelMap> saveMachine(@PathVariable("id") long id) {
+        ModelMap resp = new ModelMap();
+        ResponseEntity<ModelMap> response;
+        try {
+            machineDAO.deleteById(id);
+            resp.put("status", "ok");
+            response = ResponseEntity.ok(resp);
+        } catch (DAOException daoe) {
+            resp.put("status", "error");
+            resp.put("error", daoe.getMessage());
+            response = ResponseEntity.ok(resp);
+        }
+        return response;
+    }
+
+    @RequestMapping(value = "/test", method = {RequestMethod.GET, RequestMethod.HEAD})
+    public ResponseEntity<ModelMap> test() {
+        ModelMap resp = new ModelMap();
+        ResponseEntity<ModelMap> response;
+        try {
+            resp.put("status", "ok");
+            response = ResponseEntity.ok(resp);
+        } catch (Exception e) {
+            resp.put("status", "error");
+            resp.put("error", e.getMessage());
             response = ResponseEntity.ok(resp);
         }
         return response;
