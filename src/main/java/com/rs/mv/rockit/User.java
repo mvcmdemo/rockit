@@ -3,6 +3,8 @@ package com.rs.mv.rockit;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name="USERS")
@@ -12,9 +14,10 @@ public class User {
     private String password;
     private String name;
     private String email;
+    private Set<Group> groups = new HashSet<>();
 
     @Id
-    @Column(name="ID")
+    @Column(name="USER_ID")
     @GeneratedValue(generator="increment")
     @GenericGenerator(name="increment", strategy = "increment")
     public long getId() {
@@ -59,5 +62,16 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "USER_GROUPS", joinColumns = { @JoinColumn(name = "USER_ID", nullable = false, updatable = false) },
+            inverseJoinColumns = { @JoinColumn(name = "GROUP_ID", nullable = false, updatable = false) })
+    public Set<Group> getGroups() {
+        return groups;
+    }
+
+    public void setGroups(Set<Group> groups) {
+        this.groups = groups;
     }
 }

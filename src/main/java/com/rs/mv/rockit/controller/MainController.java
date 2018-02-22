@@ -51,15 +51,15 @@ public class MainController {
             resp.put("machines", machineDAO.getAll());
             resp.put("status", "ok");
             response = ResponseEntity.ok(resp);
-        } catch (DAOException daoe) {
+        } catch (Exception e) {
             resp.put("status", "error");
-            resp.put("error", daoe.getMessage());
+            resp.put("error", e.getMessage());
             response = ResponseEntity.ok(resp);
         }
         return response;
     }
 
-    @RequestMapping(value = "/machines", method = {RequestMethod.POST, RequestMethod.PUT, RequestMethod.HEAD})
+    @RequestMapping(value = "/machines", method = {RequestMethod.POST, RequestMethod.PUT})
     public ResponseEntity<ModelMap> saveMachine(@RequestBody Machine machine) {
         ModelMap resp = new ModelMap();
         ResponseEntity<ModelMap> response;
@@ -75,7 +75,7 @@ public class MainController {
         return response;
     }
 
-    @RequestMapping(value = "/machines/{id}", method = {RequestMethod.DELETE, RequestMethod.HEAD})
+    @RequestMapping(value = "/machines/{id}", method = {RequestMethod.DELETE})
     public ResponseEntity<ModelMap> saveMachine(@PathVariable("id") long id) {
         ModelMap resp = new ModelMap();
         ResponseEntity<ModelMap> response;

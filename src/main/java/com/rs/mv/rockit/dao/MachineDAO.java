@@ -1,5 +1,6 @@
 package com.rs.mv.rockit.dao;
 
+import com.rs.mv.rockit.Group;
 import com.rs.mv.rockit.Machine;
 import com.rs.mv.rockit.exception.DAOException;
 import org.hibernate.SessionFactory;
@@ -14,7 +15,7 @@ public class MachineDAO {
 
     @Autowired
     public MachineDAO(SessionFactory sessionFactory) {
-        this.dao = new DAO<>(sessionFactory, Machine.class);
+        this.dao = new DAO<>(sessionFactory, Group.class);
     }
 
     public List<Machine> getAll() throws DAOException {
