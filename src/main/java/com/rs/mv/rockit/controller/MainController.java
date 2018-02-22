@@ -1,8 +1,8 @@
 package com.rs.mv.rockit.controller;
 
 import com.rs.mv.rockit.Machine;
+import com.rs.mv.rockit.MachineService;
 import com.rs.mv.rockit.dao.GroupDAO;
-import com.rs.mv.rockit.dao.MachineDAO;
 import com.rs.mv.rockit.exception.DAOException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,12 +19,12 @@ import java.time.LocalDateTime;
 @Controller
 public class MainController {
     private GroupDAO groupDAO;
-    private MachineDAO machineDAO;
+    private MachineService machineService;
 
     @Autowired
-    public MainController(GroupDAO groupDAO, MachineDAO machineDAO) {
+    public MainController(GroupDAO groupDAO, MachineService machineService) {
         this.groupDAO = groupDAO;
-        this.machineDAO = machineDAO;
+        this.machineService = machineService;
     }
 
     @RequestMapping(value = "/healthcheck", method = {RequestMethod.GET, RequestMethod.HEAD})
@@ -48,7 +48,7 @@ public class MainController {
         ModelMap resp = new ModelMap();
         ResponseEntity<ModelMap> response;
         try {
-            resp.put("machines", machineDAO.getAll());
+            resp.put("machines", machineService.getAll());
             resp.put("status", "ok");
             response = ResponseEntity.ok(resp);
         } catch (Exception e) {
@@ -64,7 +64,7 @@ public class MainController {
         ModelMap resp = new ModelMap();
         ResponseEntity<ModelMap> response;
         try {
-            machineDAO.save(machine);
+            machineService.save(machine);
             resp.put("status", "ok");
             response = ResponseEntity.ok(resp);
         } catch (DAOException daoe) {
@@ -80,7 +80,7 @@ public class MainController {
         ModelMap resp = new ModelMap();
         ResponseEntity<ModelMap> response;
         try {
-            machineDAO.deleteById(id);
+            machineService.deleteById(id);
             resp.put("status", "ok");
             response = ResponseEntity.ok(resp);
         } catch (DAOException daoe) {

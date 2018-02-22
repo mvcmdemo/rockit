@@ -15,7 +15,7 @@ public class MachineDAO {
 
     @Autowired
     public MachineDAO(SessionFactory sessionFactory) {
-        this.dao = new DAO<>(sessionFactory, Group.class);
+        this.dao = new DAO<>(sessionFactory, Machine.class);
     }
 
     public List<Machine> getAll() throws DAOException {

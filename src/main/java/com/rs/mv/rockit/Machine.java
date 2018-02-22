@@ -11,10 +11,12 @@ import java.util.Set;
 public class Machine {
     private long id;
     private String host;
+    private String name;
     private String user;
     private String password;
     private String description;
     private Set<Group> groups = new HashSet<>();
+    private volatile MachineStates state = MachineStates.OFFLINE;
 
     @Id
     @Column(name="MACHINE_ID")
@@ -64,7 +66,16 @@ public class Machine {
         this.description = description;
     }
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @Column(name="NAME")
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "MACHINE_GROUPS", joinColumns = { @JoinColumn(name = "MACHINE_ID", nullable = false, updatable = false) },
             inverseJoinColumns = { @JoinColumn(name = "GROUP_ID", nullable = false, updatable = false) })
     public Set<Group> getGroups() {
@@ -73,5 +84,14 @@ public class Machine {
 
     public void setGroups(Set<Group> groups) {
         this.groups = groups;
+    }
+
+    @Transient
+    public MachineStates getState() {
+        return state;
+    }
+
+    public void setState(MachineStates state) {
+        this.state = state;
     }
 }
