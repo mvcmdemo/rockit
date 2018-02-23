@@ -9,44 +9,38 @@
                 <a class="nav-link active" id="general-tab" data-toggle="tab" href="#general" role="tab" aria-controls="home" aria-selected="true">Machine Details</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" id="groups-tab" data-toggle="tab" href="#groups" role="tab" aria-controls="profile" aria-selected="false">Groups Settings</a>
+                <a class="nav-link" id="groups-tab" data-toggle="tab" href="#groups" role="tab" aria-controls="profile" aria-selected="false">Group Settings</a>
             </li>
         </ul>
         <div class="tab-content col-12">
             <div ng-class="activeTab=='general' ? 'active tab-pane' : 'tab-pane'" id="general" style="padding: 20px">
-                <form>
+                <form id="machineConfigurationForm">
                     <div class="form-group row">
                         <label for="machineName" class="col-3 col-form-label">Machine name</label>
                         <div class="col-8">
                             <input type="text" class="form-control" id="machineName" aria-describedby="nameHelp" placeholder="Enter machine name" ng-model="machine.name">
                         </div>
                     </div>
-                </form>
-                <form>
+
                     <div class="form-group row">
                         <label for="hostname" class="col-3 col-form-label">Hostname/IP</label>
                         <div class="col-8">
-                            <input type="text" class="form-control" id="hostname" aria-describedby="hostnameHelp" placeholder="Enter hostname or IP" ng-model="machine.hostname">
+                            <input type="text" class="form-control" id="hostname" aria-describedby="hostnameHelp" placeholder="Enter hostname or IP" required ng-model="machine.hostname">
                         </div>
                     </div>
-                </form>
-                <form>
+
                     <div class="form-group row">
                         <label for="username" class="col-3 col-form-label">Username</label>
                         <div class="col-8">
                             <input type="text" class="form-control" id="username" aria-describedby="hostnameHelp" placeholder="Enter username" ng-model="machine.username">
                         </div>
                     </div>
-                </form>
-                <form>
                     <div class="form-group row">
                         <label for="password" class="col-3 col-form-label">Password</label>
                         <div class="col-8">
                             <input type="password" class="form-control" id="password" aria-describedby="hostnameHelp" placeholder="Enter password" ng-model="machine.password">
                         </div>
                     </div>
-                </form>
-                <form>
                     <div class="form-group row">
                         <label for="os" class="col-3 col-form-label">OS</label>
                         <div class="col-8">
@@ -55,8 +49,6 @@
                             </select>
                         </div>
                     </div>
-                </form>
-                <form>
                     <div class="form-group row">
                         <label for="os" class="col-3 col-form-label">Description</label>
                         <div class="col-8">
@@ -79,7 +71,7 @@
 </div>
 
 <div class="modal-footer">
-    <button type="button" class="btn btn-primary" ng-click="save()">Save</button>
+    <button type="submit" class="btn btn-primary" ng-click="save()">Save</button>
     <button type="button" class="btn btn-secondary" ng-click="cancel()" data-dismiss="modal">Close</button>
 
 </div>

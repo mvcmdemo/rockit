@@ -12,7 +12,7 @@ app.controller('MachineEditorController', function ($scope, $uibModalInstance, $
         }
         // else, add new group
         else {
-            $scope.machine.groups.push(groups);
+            $scope.machine.groups.push(group);
         }
     };
 

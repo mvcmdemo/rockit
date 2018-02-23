@@ -55,15 +55,15 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
+                    <tr ng-repeat="machine in machines">
                         <td>State</td>
-                        <td>Name</td>
-                        <td>Hostname</td>
-                        <td>OS</td>
+                        <td>{{machine.name}}</td>
+                        <td>{{machine.hostname}}</td>
+                        <td>{{machine.os}}</td>
                         <td>Usage</td>
-                        <td>Description</td>
+                        <td>{{machine.description}}</td>
                         <td>
-                            <button type="button" class="btn btn-primary btn-sm"><i class="fa fa-edit" aria-hidden="true"></i></button>
+                            <button type="button" class="btn btn-primary btn-sm" ng-click="editMachine(machine)"><i class="fa fa-edit" aria-hidden="true"></i></button>
                             <button type="button" class="btn btn-danger btn-sm"><i class="fa fa-close" aria-hidden="true"></i></button>
 
 
