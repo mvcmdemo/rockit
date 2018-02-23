@@ -1,0 +1,31 @@
+body {
+    padding-top: 65px;
+    padding-left: 24px;
+    padding-right: 24px;
+}
+
+h2 {
+
+}
+
+.fade.in {
+    opacity: 1;
+}
+.modal.in .modal-dialog {
+    -webkit-transform: translate(0, 0);
+    -o-transform: translate(0, 0);
+    transform: translate(0, 0);
+}
+
+.modal-backdrop .fade .in {
+    opacity: 0.5 !important;
+}
+
+
+.modal-backdrop.fade {
+    opacity: 0.5 !important;
+}
+
+.modal{
+    background: rgba(0,0,0,0.3);
+}

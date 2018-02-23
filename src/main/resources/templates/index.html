@@ -5,30 +5,33 @@
         <meta charset="utf-8">
         <link rel="stylesheet" href="lib/bootstrap/css/bootstrap.css">
         <link rel="stylesheet" href="css/rockit.css">
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="css/font-awesome.min.css">
 
         <link rel="icon" type="image/x-icon" href="img/logo.png">
 
-        <title>ROCKit</title>
+        <title>ROCKIT</title>
     </head>
 
-    <body ng-controller="rockitController" style="padding-top: 65px;">
+    <body ng-controller="rockitController">
+        <!-- Menu -->
         <div class="container">
             <nav class="navbar navbar-inverse bg-inverse fixed-top">
-                <div class="navbar-inner row">
+                <div class="navbar-inner row" style="padding-left:20px; padding-right:20px">
                     <a class="navbar-brand" href="#">
-                        <img src="/img/rockit.png" width="30" height="30" class="d-inline-block align-top" alt="">
+                        <img src="/img/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
                         <span>ROCKIT</span>
                     </a>
                     <div style="left: 10%; position: absolute">
                         <ul class="nav navbar-nav" style="flex-direction: row; ">
                             <li class="nav-item">
-                                <a class="nav-link" href="#" style="padding-right: 24px; padding-left: 24px">Machines</a>
+                                <a class="nav-link" href="#machines" style="padding-right: 24px; padding-left: 24px">Machines</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#" style="padding-right: 24px; padding-left: 24px">Users</a>
+                                <a class="nav-link" href="#groups" style="padding-right: 24px; padding-left: 24px">Users</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#" style="padding-right: 24px; padding-left: 24px">Groups</a>
+                                <a class="nav-link" href="#users" style="padding-right: 24px; padding-left: 24px">Groups</a>
                             </li>
                         </ul>
                     </div>
@@ -36,15 +39,63 @@
             </nav>
         </div>
 
+        <!-- Machines -->
+        <h2 id="machines" href="#machines">Machines</h2>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>State</th>
+                        <th>Name</th>
+                        <th>Hostname</th>
+                        <th>OS</th>
+                        <th>Usage</th>
+                        <th>Description</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>State</td>
+                        <td>Name</td>
+                        <td>Hostname</td>
+                        <td>OS</td>
+                        <td>Usage</td>
+                        <td>Description</td>
+                        <td>
+                            <button type="button" class="btn btn-primary btn-sm"><i class="fa fa-edit" aria-hidden="true"></i></button>
+                            <button type="button" class="btn btn-danger btn-sm"><i class="fa fa-close" aria-hidden="true"></i></button>
+
+
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-primary">Connect</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="pull-right">
+                <button type="button" class="btn btn-secondary" ng-click="addMachine()">Add Machine</button>
+            </div>
+        </div>
+
+
+        <!-- Groups -->
+        <h2 id="groups" href="#groups">Groups</h2>
+        <!-- Users -->
+        <h2 id="users" href="#users">Users</h2>
+
         <script src="lib/jquery-3.3.1.js"></script>
         <script src="lib/tether.min.js"></script>
 
         <script src="lib/angular-1.6.9/angular.js"></script>
         <script src="lib/angular-1.6.9/angular-route.js"></script>
         <script src="lib/bootstrap/js/bootstrap.js"></script>
+        <script src="lib/ui-bootstrap-tpls-2.5.0.min.js"></script>
 
         <script src="js/rockit.js"></script>
         <script src="js/controllers/rockitController.js"></script>
+        <script src="js/controllers/MachineEditorController.js"></script>
     </body>
 
 </html>
