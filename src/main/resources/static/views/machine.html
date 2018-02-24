@@ -60,8 +60,8 @@
             <div ng-class="activeTab=='groups' ? 'active tab-pane' : 'tab-pane'" id="groups" style="padding: 20px">
                 <div class="col-10">
                     <div class="col-10" ng-repeat="group in groups">
-                        <input type="checkbox" ng-click="toggleGroup(group)" ng-checked="machine.groups.indexOf(group) > -1"/>
-                        <span type="text" ng-bind="group" style="padding-left: 10px; padding-bottom: 5px"></span>
+                        <input type="checkbox" ng-click="toggleGroup(group)" ng-checked="machine.groups.indexOf(group.id) > -1"/>
+                        <span type="text" ng-bind="group.name" style="padding-left: 10px; padding-bottom: 5px"></span>
                     </div>
                 </div>
             </div>

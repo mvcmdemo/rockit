@@ -1,19 +1,22 @@
-app.controller('rockitController', ['$scope', '$q', '$log', '$window', '$timeout', '$http', '$interval', '$rootScope', '$uibModal',
-    function AdminController($scope, $q, $log, $window, $timeout, $http, $interval, $rootScope, $uibModal) {
+app.controller('rockitController', ['$scope', '$q', '$log', '$window', '$timeout', '$http', '$interval', '$rootScope', '$uibModal', 'editableOptions',
+    function AdminController($scope, $q, $log, $window, $timeout, $http, $interval, $rootScope, $uibModal, editableOptions) {
 
         $scope.animationsEnabled = true;
 
+        editableOptions.theme = 'bs3';
+
         $scope.OSs = ['Windows', 'Unix'];
 
-        $scope.groups = ['SBXA', 'MV', 'CorVU', 'RMob'];
+        $scope.groups = [{id: '1', name: 'SBXA'},{id: '2', name: 'MV'},{id: '3', name: 'CorVU'},{id: '4', name: 'RMob'}];
         $scope.machines = [{
+            id: '1',
             name: 'eng105',
             hostname: 'den-vm-eng105.u2lab.rs.com',
             username: 'administrator',
             password: 'U2razzle',
             os: $scope.OSs[0],
             description: 'Windows Server 2015',
-            groups: [$scope.groups[1]]
+            groups: [$scope.groups[1].id]
         }];
 
         $scope.editMachine = function(machine) {
@@ -22,6 +25,7 @@ app.controller('rockitController', ['$scope', '$q', '$log', '$window', '$timeout
 
         $scope.addMachine = function() {
             var machine = {
+                id: IDgenerator(),
                 name: '',
                 hostname: '',
                 username: '',
@@ -61,23 +65,38 @@ app.controller('rockitController', ['$scope', '$q', '$log', '$window', '$timeout
                 if (isNew) {
                     // add a new machine
                     $scope.machines.push(returnMachine);
-                }
-                else{
+                } else {
                     // edit an existing machine
                     var idx = $scope.machines.findIndex(isEqual, oldMachineName);
                     if(idx > -1) {
                         $scope.machines.splice(idx, 1);
                         $scope.machines.push(returnMachine);
                     }
-
                 }
             }, function () {
                 return false;
             });
         }
+
+        $scope.addGroup = function () {
+            var idx = $scope.groups.findIndex(isEqual, '');
+            if (idx === -1) {
+                var group = {id: IDgenerator(), name: ''};
+                $scope.groups.push(group);
+            } else {
+                alert('You can\'t add one more group');
+            }
+        };
         
         function isEqual(element) {
-            return element.name == this;
+            return element.name === this;
+        }
+
+        function IDgenerator() {
+            // Math.random should be unique because of its seeding algorithm.
+            // Convert it to base 36 (numbers + letters), and grab the first 9 characters
+            // after the decimal.
+            return '_' + Math.random().toString(36).substr(2, 9);
         }
 
     }

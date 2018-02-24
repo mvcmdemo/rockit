@@ -5,14 +5,14 @@ app.controller('MachineEditorController', function ($scope, $uibModalInstance, $
     $scope.groups = angular.copy(groups);
 
     $scope.toggleGroup = function(group) {
-        var idx = $scope.machine.groups.indexOf(group);
+        var idx = $scope.machine.groups.indexOf(group.id);
         // if group exists in machine.groups then we should remove it
         if (idx > -1) {
             $scope.machine.groups.splice(idx, 1);
         }
         // else, add new group
         else {
-            $scope.machine.groups.push(group);
+            $scope.machine.groups.push(group.id);
         }
     };
 
