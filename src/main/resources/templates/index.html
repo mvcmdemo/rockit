@@ -5,35 +5,136 @@
         <meta charset="utf-8">
         <link rel="stylesheet" href="lib/bootstrap/css/bootstrap.css">
         <link rel="stylesheet" href="css/rockit.css">
-
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="css/font-awesome.min.css">
+        <link rel="stylesheet" href="lib/angular-xeditable/css/xeditable.css">
         <link rel="icon" type="image/x-icon" href="img/logo.png">
 
-        <title>ROCKit</title>
+        <title>ROCKIT</title>
     </head>
 
-    <body ng-controller="rockitController" style="padding-top: 65px;">
+    <body ng-controller="rockitController">
+        <!-- Menu -->
         <div class="container">
             <nav class="navbar navbar-inverse bg-inverse fixed-top">
-                <div class="navbar-inner row">
+                <div class="navbar-inner row" style="padding-left:20px; padding-right:20px">
                     <a class="navbar-brand" href="#">
-                        <img src="/img/rockit.png" width="30" height="30" class="d-inline-block align-top" alt="">
+                        <img src="/img/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
                         <span>ROCKIT</span>
                     </a>
-                    <div style="left: 10%; position: absolute">
+                    <!--<div style="left: 10%; position: absolute">
                         <ul class="nav navbar-nav" style="flex-direction: row; ">
                             <li class="nav-item">
-                                <a class="nav-link" href="#" style="padding-right: 24px; padding-left: 24px">Machines</a>
+                                <a class="nav-link" href="#machines" style="padding-right: 24px; padding-left: 24px">Machines</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#" style="padding-right: 24px; padding-left: 24px">Users</a>
+                                <a class="nav-link" href="#groups" style="padding-right: 24px; padding-left: 24px">Users</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#" style="padding-right: 24px; padding-left: 24px">Groups</a>
+                                <a class="nav-link" href="#users" style="padding-right: 24px; padding-left: 24px">Groups</a>
                             </li>
                         </ul>
-                    </div>
+                    </div>-->
                 </div>
             </nav>
+        </div>
+
+        <div id="accordion" role="tablist" aria-multiselectable="true">
+            <div class="card">
+                <div class="card-header" role="tab" id="headingMachines">
+                    <h5 class="mb-0">
+                        <h2 data-toggle="collapse" data-parent="#accordion" href="#collapseMachines" aria-expanded="true" aria-controls="collapseMachines" style="cursor: pointer;">Machines</h2>
+                    </h5>
+                </div>
+
+                <div id="collapseMachines" class="collapse show" role="tabpanel" aria-labelledby="headingMachines">
+                    <div class="card-block">
+                        <!-- Machines -->
+                        <!--<h2 id="machines" href="#machines">Machines</h2>-->
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th>State</th>
+                                    <th>Name</th>
+                                    <th>Hostname</th>
+                                    <th>OS</th>
+                                    <th>Usage</th>
+                                    <th>Description</th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="machine in machines">
+                                    <td>State</td>
+                                    <td>{{machine.name}}</td>
+                                    <td>{{machine.hostname}}</td>
+                                    <td>{{machine.os}}</td>
+                                    <td>Usage</td>
+                                    <td>{{machine.description}}</td>
+                                    <td>
+                                        <button type="button" class="btn btn-primary btn-sm" ng-click="editMachine(machine)"><i class="fa fa-edit" aria-hidden="true"></i></button>
+                                        <button type="button" class="btn btn-danger btn-sm"><i class="fa fa-close" aria-hidden="true"></i></button>
+
+
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-primary">Connect</button>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <div class="pull-right">
+                                <button type="button" class="btn btn-secondary" ng-click="addMachine()">Add Machine</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header" role="tab" id="headingGroups">
+                    <h5 class="mb-0">
+                        <h2 class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseGroups" aria-expanded="false" aria-controls="collapseGroups" style="cursor: pointer;">Groups</h2>
+                    </h5>
+                </div>
+                <div id="collapseGroups" class="collapse" role="tabpanel" aria-labelledby="headingGroups">
+                    <div class="card-block">
+                        <!-- Groups -->
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <tr ng-repeat="group in groups">
+                                    <td>
+                                        <div>
+                                            <a href="#" editable-text="group.name" e-required>{{ group.name || 'empty' }}</a>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="pull-right">
+                                            <button type="button" class="btn btn-danger btn-sm"><i class="fa fa-close" aria-hidden="true"></i></button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="pull-right">
+                            <button type="button" class="btn btn-secondary" ng-click="addGroup()" style="margin-bottom: 20px">Add Group</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header" role="tab" id="headingUsers">
+                    <h5 class="mb-0">
+                        <h2 class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseUsers" aria-expanded="false" aria-controls="collapseUsers" style="cursor: pointer;">Users</h2>
+                    </h5>
+                </div>
+                <div id="collapseUsers" class="collapse" role="tabpanel" aria-labelledby="headingUsers">
+                    <div class="card-block">
+                        <!-- Users -->
+                        <!--<h2 id="users" href="#users">Users</h2>-->
+                    </div>
+                </div>
+            </div>
         </div>
 
         <script src="lib/jquery-3.3.1.js"></script>
@@ -42,9 +143,12 @@
         <script src="lib/angular-1.6.9/angular.js"></script>
         <script src="lib/angular-1.6.9/angular-route.js"></script>
         <script src="lib/bootstrap/js/bootstrap.js"></script>
+        <script src="lib/ui-bootstrap-tpls-2.5.0.min.js"></script>
+        <script src="lib/angular-xeditable/js/xeditable.js"></script>
 
         <script src="js/rockit.js"></script>
         <script src="js/controllers/rockitController.js"></script>
+        <script src="js/controllers/MachineEditorController.js"></script>
     </body>
 
 </html>

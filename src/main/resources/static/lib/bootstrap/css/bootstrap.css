@@ -14,6 +14,9 @@ html {
 
 body {
   margin: 0;
+  padding-top: 65px;
+  padding-left: 24px;
+  padding-right: 24px;
 }
 
 article,
