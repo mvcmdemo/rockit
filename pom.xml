@@ -64,7 +64,37 @@
 			<version>10.14.1.0</version>
 		</dependency>
 
-	</dependencies>
+		<dependency>
+			<groupId>com.jcraft</groupId>
+			<artifactId>jsch</artifactId>
+			<version>0.1.54</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.corundumstudio.socketio</groupId>
+			<artifactId>netty-socketio</artifactId>
+			<version>1.7.13</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.netty</groupId>
+			<artifactId>netty-transport</artifactId>
+			<version>4.1.16.Final</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.netty</groupId>
+			<artifactId>netty-common</artifactId>
+			<version>4.1.16.Final</version>
+		</dependency>
+
+        <dependency>
+            <groupId>org.ostermiller</groupId>
+            <artifactId>utils</artifactId>
+            <version>1.07.00</version>
+        </dependency>
+
+    </dependencies>
 
 	<build>
 		<plugins>

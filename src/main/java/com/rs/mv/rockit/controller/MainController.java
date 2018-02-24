@@ -43,6 +43,11 @@ public class MainController {
         return "index";
     }
 
+    @RequestMapping("/terminal")
+    public String terminal(Model model) {
+        return "terminal";
+    }
+
     @RequestMapping(value = "/machines", method = {RequestMethod.GET, RequestMethod.HEAD})
     public ResponseEntity<ModelMap> getMachines() {
         ModelMap resp = new ModelMap();
