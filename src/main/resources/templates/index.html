@@ -4,6 +4,7 @@
     <head>
         <meta charset="utf-8">
         <link rel="stylesheet" href="lib/bootstrap/css/bootstrap.css">
+        <link rel="stylesheet" href="lib/bootstrap/css/bootstrap-dialog.min.css">
         <link rel="stylesheet" href="css/rockit.css">
         <!-- Font Awesome -->
         <link rel="stylesheet" href="css/font-awesome.min.css">
@@ -68,7 +69,7 @@
                                 <tr ng-repeat="machine in machines">
                                     <td>State</td>
                                     <td>{{machine.name}}</td>
-                                    <td>{{machine.hostname}}</td>
+                                    <td>{{machine.host}}</td>
                                     <td>{{machine.os}}</td>
                                     <td>Usage</td>
                                     <td>{{machine.description}}</td>
@@ -79,7 +80,7 @@
 
                                     </td>
                                     <td>
-                                        <button type="button" class="btn btn-primary">Connect</button>
+                                        <button type="button" class="btn btn-primary" ng-click="terminal(machine)">Connect</button>
                                     </td>
                                 </tr>
                                 </tbody>
@@ -143,12 +144,15 @@
         <script src="lib/angular-1.6.9/angular.js"></script>
         <script src="lib/angular-1.6.9/angular-route.js"></script>
         <script src="lib/bootstrap/js/bootstrap.js"></script>
+        <script src="lib/bootstrap/js/bootstrap-dialog.min.js"></script>
         <script src="lib/ui-bootstrap-tpls-2.5.0.min.js"></script>
         <script src="lib/angular-xeditable/js/xeditable.js"></script>
 
         <script src="js/rockit.js"></script>
         <script src="js/controllers/rockitController.js"></script>
         <script src="js/controllers/MachineEditorController.js"></script>
+        <script src="js/services/messageService.js"></script>
+        <script src="js/services/utils.js"></script>
     </body>
 
 </html>

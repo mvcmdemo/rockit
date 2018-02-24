@@ -1,5 +1,5 @@
-app.controller('rockitController', ['$scope', '$q', '$log', '$window', '$timeout', '$http', '$interval', '$rootScope', '$uibModal', 'editableOptions',
-    function AdminController($scope, $q, $log, $window, $timeout, $http, $interval, $rootScope, $uibModal, editableOptions) {
+app.controller('rockitController', ['$scope', '$q', '$log', '$window', '$timeout', '$http', '$interval', '$rootScope', '$uibModal', 'editableOptions', 'utils',
+    function AdminController($scope, $q, $log, $window, $timeout, $http, $interval, $rootScope, $uibModal, editableOptions, utils) {
 
         $scope.animationsEnabled = true;
 
@@ -9,15 +9,35 @@ app.controller('rockitController', ['$scope', '$q', '$log', '$window', '$timeout
 
         $scope.groups = [{id: '1', name: 'SBXA'},{id: '2', name: 'MV'},{id: '3', name: 'CorVU'},{id: '4', name: 'RMob'}];
         $scope.machines = [{
-            id: '1',
+            id: utils.IDgenerator(),
             name: 'eng105',
-            hostname: 'den-vm-eng105.u2lab.rs.com',
-            username: 'administrator',
+            host: 'den-vm-eng105.u2lab.rs.com',
+            user: 'administrator',
             password: 'U2razzle',
             os: $scope.OSs[0],
             description: 'Windows Server 2015',
-            groups: [$scope.groups[1].id]
+            groups: [$scope.groups[1]]
+        },
+        {
+            id: utils.IDgenerator(),
+            name: 'lxsb1',
+            host: 'den-vm-lxsb1.u2lab.rs.com',
+            user: 'upix',
+            password: 'U2rivers',
+            os: $scope.OSs[1],
+            description: 'Linux',
+            groups: [$scope.groups[1], $scope.groups[2]]
         }];
+
+        $scope.terminal = function(machine){
+            $window.open('/terminal');
+            /*$http
+                .get('/terminal')
+                .then(function(data){
+                    //data is link to pdf
+                    $window.open(data);
+                });*/
+        };
 
         $scope.editMachine = function(machine) {
             openMachineEditor(machine, false);
@@ -25,10 +45,10 @@ app.controller('rockitController', ['$scope', '$q', '$log', '$window', '$timeout
 
         $scope.addMachine = function() {
             var machine = {
-                id: IDgenerator(),
+                id: utils.IDgenerator(),
                 name: '',
-                hostname: '',
-                username: '',
+                host: '',
+                user: '',
                 password: '',
                 os: '',
                 description: '',
@@ -38,7 +58,7 @@ app.controller('rockitController', ['$scope', '$q', '$log', '$window', '$timeout
         };
 
         function openMachineEditor(machine, isNew) {
-            var oldMachineName = machine.name;
+            var id = machine.id;
             var modalInstance = $uibModal.open({
                 backdrop : false,
                 animation : $scope.animationsEnabled,
@@ -57,6 +77,9 @@ app.controller('rockitController', ['$scope', '$q', '$log', '$window', '$timeout
                     },
                     groups : function () {
                         return $scope.groups;
+                    },
+                    utils : function () {
+                        return utils;
                     }
 
                 }
@@ -64,10 +87,16 @@ app.controller('rockitController', ['$scope', '$q', '$log', '$window', '$timeout
             modalInstance.result.then(function (returnMachine) {
                 if (isNew) {
                     // add a new machine
-                    $scope.machines.push(returnMachine);
+                    $http.post("/machines", returnMachine).then(
+                        function () {
+                            $scope.machines.push(returnMachine);
+                        }, function () {
+                            alert("Failed to save '" + returnMachine.name + "' machine");
+                    });
+
                 } else {
                     // edit an existing machine
-                    var idx = $scope.machines.findIndex(isEqual, oldMachineName);
+                    var idx = $scope.machines.findIndex(utils.isEqual, id);
                     if(idx > -1) {
                         $scope.machines.splice(idx, 1);
                         $scope.machines.push(returnMachine);
@@ -79,25 +108,33 @@ app.controller('rockitController', ['$scope', '$q', '$log', '$window', '$timeout
         }
 
         $scope.addGroup = function () {
-            var idx = $scope.groups.findIndex(isEqual, '');
+            var idx = $scope.groups.findIndex(utils.isEqualName, '');
             if (idx === -1) {
-                var group = {id: IDgenerator(), name: ''};
+                var group = {id: utils.IDgenerator(), name: ''};
                 $scope.groups.push(group);
             } else {
                 alert('You can\'t add one more group');
             }
         };
-        
-        function isEqual(element) {
-            return element.name === this;
-        }
 
-        function IDgenerator() {
-            // Math.random should be unique because of its seeding algorithm.
-            // Convert it to base 36 (numbers + letters), and grab the first 9 characters
-            // after the decimal.
-            return '_' + Math.random().toString(36).substr(2, 9);
-        }
+        $rootScope.$on('http.error', function (event, status) {
+            switch (status) {
+//				case  - 1:
+//					// showError($scope.messages["serviceIsUnreachable"]);
+//					break;
+                case 500:
+                    // showError($scope.messages["serviceIsUnreachable"]);
+                    return;
+                case 400:
+                    // showError($scope.messages["serviceIsUnreachable"]);
+                    return;
+                default:
+                    // showError($scope.messages["serviceIsUnreachable"]);
+                    //destroy();
+                    //$scope.loadingUser = false;
+                    break;
+            }
+        });
 
     }
 ]);

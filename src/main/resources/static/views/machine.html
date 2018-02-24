@@ -25,14 +25,14 @@
                     <div class="form-group row">
                         <label for="hostname" class="col-3 col-form-label">Hostname/IP</label>
                         <div class="col-8">
-                            <input type="text" class="form-control" id="hostname" aria-describedby="hostnameHelp" placeholder="Enter hostname or IP" required ng-model="machine.hostname">
+                            <input type="text" class="form-control" id="hostname" aria-describedby="hostnameHelp" placeholder="Enter hostname or IP" required ng-model="machine.host">
                         </div>
                     </div>
 
                     <div class="form-group row">
                         <label for="username" class="col-3 col-form-label">Username</label>
                         <div class="col-8">
-                            <input type="text" class="form-control" id="username" aria-describedby="hostnameHelp" placeholder="Enter username" ng-model="machine.username">
+                            <input type="text" class="form-control" id="username" aria-describedby="hostnameHelp" placeholder="Enter username" ng-model="machine.user">
                         </div>
                     </div>
                     <div class="form-group row">
@@ -60,7 +60,7 @@
             <div ng-class="activeTab=='groups' ? 'active tab-pane' : 'tab-pane'" id="groups" style="padding: 20px">
                 <div class="col-10">
                     <div class="col-10" ng-repeat="group in groups">
-                        <input type="checkbox" ng-click="toggleGroup(group)" ng-checked="machine.groups.indexOf(group.id) > -1"/>
+                        <input type="checkbox" ng-click="toggleGroup(group)" ng-checked="isGroupChecked(group)"/>
                         <span type="text" ng-bind="group.name" style="padding-left: 10px; padding-bottom: 5px"></span>
                     </div>
                 </div>

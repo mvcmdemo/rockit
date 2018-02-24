@@ -5,6 +5,7 @@ import com.rs.mv.rockit.MachineService;
 import com.rs.mv.rockit.dao.GroupDAO;
 import com.rs.mv.rockit.exception.DAOException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -59,7 +60,7 @@ public class MainController {
         } catch (Exception e) {
             resp.put("status", "error");
             resp.put("error", e.getMessage());
-            response = ResponseEntity.ok(resp);
+            response = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(resp);
         }
         return response;
     }
@@ -75,7 +76,7 @@ public class MainController {
         } catch (DAOException daoe) {
             resp.put("status", "error");
             resp.put("error", daoe.getMessage());
-            response = ResponseEntity.ok(resp);
+            response = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(resp);
         }
         return response;
     }
@@ -91,7 +92,7 @@ public class MainController {
         } catch (DAOException daoe) {
             resp.put("status", "error");
             resp.put("error", daoe.getMessage());
-            response = ResponseEntity.ok(resp);
+            response = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(resp);
         }
         return response;
     }
@@ -106,7 +107,7 @@ public class MainController {
         } catch (Exception e) {
             resp.put("status", "error");
             resp.put("error", e.getMessage());
-            response = ResponseEntity.ok(resp);
+            response = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(resp);
         }
         return response;
     }
