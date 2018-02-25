@@ -1,13 +1,15 @@
-app.controller('rockitController', ['$scope', '$q', '$log', '$window', '$timeout', '$http', '$interval', '$rootScope', '$uibModal', 'editableOptions', 'utils',
-    function AdminController($scope, $q, $log, $window, $timeout, $http, $interval, $rootScope, $uibModal, editableOptions, utils) {
+app.controller('rockitController', ['$scope', '$q', '$log', '$window', '$timeout', '$http', '$interval', '$rootScope', '$uibModal', 'editableOptions', 'utils', 'dataService', '$window',
+    function AdminController($scope, $q, $log, $window, $timeout, $http, $interval, $rootScope, $uibModal, editableOptions, utils, dataService, $window) {
 
         $scope.animationsEnabled = true;
+
+        $scope.sharedService = dataService;
 
         editableOptions.theme = 'bs3';
 
         $scope.OSs = ['Windows', 'Unix'];
 
-        $scope.groups = [{id: '1', name: 'SBXA'},{id: '2', name: 'MV'},{id: '3', name: 'CorVU'},{id: '4', name: 'RMob'}];
+        $scope.groups = [];
         $scope.machines = [{
             id: utils.IDgenerator(),
             name: 'eng105',
@@ -18,25 +20,58 @@ app.controller('rockitController', ['$scope', '$q', '$log', '$window', '$timeout
             description: 'Windows Server 2015',
             groups: [$scope.groups[1]]
         },
-        {
-            id: utils.IDgenerator(),
-            name: 'lxsb1',
-            host: 'den-vm-lxsb1.u2lab.rs.com',
-            user: 'upix',
-            password: 'U2rivers',
-            os: $scope.OSs[1],
-            description: 'Linux',
-            groups: [$scope.groups[1], $scope.groups[2]]
-        }];
+            {
+                id: utils.IDgenerator(),
+                name: 'lxsb1',
+                host: 'den-vm-lxsb1.u2lab.rs.com',
+                user: 'upix',
+                password: 'U2rivers',
+                os: $scope.OSs[1],
+                description: 'Linux',
+                groups: [$scope.groups[1], $scope.groups[2]]
+            }];
 
-        $scope.terminal = function(machine){
-            $window.open('/terminal');
-            /*$http
-                .get('/terminal')
-                .then(function(data){
-                    //data is link to pdf
-                    $window.open(data);
-                });*/
+        $scope.getAllMachines = function() {
+            $http.get('/machines').then(function(response){
+                $scope.machines = response;
+            });
+        };
+
+        $scope.terminal = function(machine) {
+            $window.open('/terminal/' + machine.id, '_blank');
+        };
+
+        $scope.deleteMachine = function(machine) {
+            BootstrapDialog.show({
+                closeByBackdrop: false,
+                message: "Are you sure you want to delete '" + machine.name + "' machine?",
+                title: "Delete machine",
+                type: BootstrapDialog.TYPE_WARNING,
+                onshown: function(dialogRef) {
+                    dialogRef.getButton('yes').focus();
+                },
+                buttons: [
+                    {
+                        id: 'yes',
+                        label: 'Yes',
+                        cssClass: 'btn-warning',
+                        action:
+                            function(dialogRef){
+                                $http.delete('/machine/' + machine.id).then(function () {
+                                    var idx = $scope.machines.findIndex(utils.isEqual, machine.id);
+                                    $scope.machines.splice(idx, 1);
+                                });
+                                dialogRef.close();
+                            }
+                    }, {
+                        label: 'No',
+                        action:
+                            function(dialogRef){
+                                dialogRef.close();
+                            }
+                    }]
+
+            });
         };
 
         $scope.editMachine = function(machine) {

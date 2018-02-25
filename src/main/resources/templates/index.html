@@ -75,7 +75,7 @@
                                     <td>{{machine.description}}</td>
                                     <td>
                                         <button type="button" class="btn btn-primary btn-sm" ng-click="editMachine(machine)"><i class="fa fa-edit" aria-hidden="true"></i></button>
-                                        <button type="button" class="btn btn-danger btn-sm"><i class="fa fa-close" aria-hidden="true"></i></button>
+                                        <button type="button" class="btn btn-danger btn-sm" ng-click="deleteMachine(machine)"><i class="fa fa-close" aria-hidden="true"></i></button>
 
 
                                     </td>
@@ -149,10 +149,15 @@
         <script src="lib/angular-xeditable/js/xeditable.js"></script>
 
         <script src="js/rockit.js"></script>
+
         <script src="js/controllers/rockitController.js"></script>
         <script src="js/controllers/MachineEditorController.js"></script>
+        <script src="js/controllers/terminalController.js"></script>
+
+        <script src="js/services/dataService.js"></script>
         <script src="js/services/messageService.js"></script>
         <script src="js/services/utils.js"></script>
+
     </body>
 
 </html>

@@ -48,8 +48,9 @@ public class MainController {
         return "index";
     }
 
-    @RequestMapping("/terminal")
-    public String terminal(Model model) {
+    @RequestMapping("/terminal/{id}")
+    public String terminal(Model model, @PathVariable long id) {
+        model.addAttribute("machineID", id);
         return "terminal";
     }
 
