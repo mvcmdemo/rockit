@@ -31,15 +31,22 @@ public class MachineService {
     }
 
     public Machine getById(long id) throws DAOException {
+        for (Machine machine : machines) {
+            if (machine.getId() == id) {
+                return machine;
+            }
+        }
         return machineDAO.getById(id);
     }
 
     public void save(Machine machine) throws DAOException {
         machineDAO.save(machine);
+        refreshMachines();
     }
 
     public void deleteById(long id) throws DAOException {
         machineDAO.deleteById(id);
+        refreshMachines();
     }
 
     private void refreshMachines() throws DAOException {
