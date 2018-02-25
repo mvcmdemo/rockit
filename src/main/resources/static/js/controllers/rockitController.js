@@ -18,7 +18,7 @@ app.controller('rockitController', ['$scope', '$q', '$log', '$window', '$timeout
 
         $scope.getAllMachines = function() {
             $http.get('/machines').then(function(response){
-                $scope.machines = response;
+                $scope.machines = response.data.machines;
             });
         };
 
