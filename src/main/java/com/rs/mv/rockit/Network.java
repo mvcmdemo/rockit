@@ -3,10 +3,7 @@ package com.rs.mv.rockit;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.net.Socket;
-import java.net.SocketAddress;
+import java.net.*;
 
 @Service
 public class Network {
@@ -51,5 +48,17 @@ public class Network {
             }
         }
         return portOpen;
+    }
+
+    String getLocalHostName() {
+        String hostName;
+        try  {
+            InetAddress addr;
+            addr = InetAddress.getLocalHost();
+            hostName = addr.getHostName();
+        } catch (UnknownHostException ex) {
+            return "localhost";
+        }
+        return hostName;
     }
 }

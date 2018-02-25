@@ -23,9 +23,9 @@ import java.util.concurrent.Future;
 @Service
 public class RSocketIOServer {
     private final static int SOCKET_IO_SERVER_PORT = 8081; // TODO: move to configuration
-    private final static String serverName = "localhost"; // TODO: get DNS server name
     private final static String MACHINE_ID_PARAM_NAME = "machine_id";
 
+    private String serverName;
     private ApplicationContext ctx;
     private MachineService machineService;
     private SocketIOServer server;
@@ -34,9 +34,11 @@ public class RSocketIOServer {
     private Thread serverThread;
 
     @Autowired
-    public RSocketIOServer(ApplicationContext ctx, MachineService machineService) {
+    public RSocketIOServer(ApplicationContext ctx, MachineService machineService, Network network) {
         this.ctx = ctx;
         this.machineService = machineService;
+        //this.serverName = network.getLocalHostName();
+        this.serverName = "localhost";
         receiverThreadPool = Executors.newCachedThreadPool();
         configureServer();
         startServer();
