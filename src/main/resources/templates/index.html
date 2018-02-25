@@ -60,14 +60,14 @@
                                     <th>Name</th>
                                     <th>Hostname</th>
                                     <th>OS</th>
-                                    <th>Usage</th>
+                                    <th>Status</th>
                                     <th>Description</th>
                                     <th></th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr ng-repeat="machine in machines">
-                                    <td>State</td>
+                                    <td><img ng-src="{{machine.state == 'ONLINE' ? '/img/green.png' : '/img/red.png'}}" style="width:16px;height:16px;" border="0"></td>
                                     <td>{{machine.name}}</td>
                                     <td>{{machine.host}}</td>
                                     <td>{{machine.os}}</td>
