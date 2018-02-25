@@ -29,6 +29,10 @@ public class MachineService {
         return machines;
     }
 
+    public Machine getById(long id) throws DAOException {
+        return machineDAO.getById(id);
+    }
+
     public void save(Machine machine) throws DAOException {
         machineDAO.save(machine);
     }

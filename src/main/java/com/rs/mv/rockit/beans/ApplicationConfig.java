@@ -1,5 +1,6 @@
 package com.rs.mv.rockit.beans;
 
+import com.jcraft.jsch.JSch;
 import com.rs.mv.rockit.Group;
 import org.hibernate.SessionFactory;
 import org.springframework.context.annotation.Bean;
@@ -17,5 +18,10 @@ public class ApplicationConfig {
             throw new ExceptionInInitializerError(ex);
         }
         return sessionFactory;
+    }
+
+    @Bean
+    JSch getJSch() {
+        return new JSch();
     }
 }
