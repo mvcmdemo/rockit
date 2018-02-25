@@ -10,26 +10,11 @@ app.controller('rockitController', ['$scope', '$q', '$log', '$window', '$timeout
         $scope.OSs = ['Windows', 'Unix'];
 
         $scope.groups = [];
-        $scope.machines = [{
-            id: utils.IDgenerator(),
-            name: 'eng105',
-            host: 'den-vm-eng105.u2lab.rs.com',
-            user: 'administrator',
-            password: 'U2razzle',
-            os: $scope.OSs[0],
-            description: 'Windows Server 2015',
-            groups: [$scope.groups[1]]
-        },
-            {
-                id: utils.IDgenerator(),
-                name: 'lxsb1',
-                host: 'den-vm-lxsb1.u2lab.rs.com',
-                user: 'upix',
-                password: 'U2rivers',
-                os: $scope.OSs[1],
-                description: 'Linux',
-                groups: [$scope.groups[1], $scope.groups[2]]
-            }];
+        $scope.machines = [];
+
+        $scope.getResources = function() {
+            $scope.getAllMachines();
+        };
 
         $scope.getAllMachines = function() {
             $http.get('/machines').then(function(response){
@@ -42,35 +27,9 @@ app.controller('rockitController', ['$scope', '$q', '$log', '$window', '$timeout
         };
 
         $scope.deleteMachine = function(machine) {
-            BootstrapDialog.show({
-                closeByBackdrop: false,
-                message: "Are you sure you want to delete '" + machine.name + "' machine?",
-                title: "Delete machine",
-                type: BootstrapDialog.TYPE_WARNING,
-                onshown: function(dialogRef) {
-                    dialogRef.getButton('yes').focus();
-                },
-                buttons: [
-                    {
-                        id: 'yes',
-                        label: 'Yes',
-                        cssClass: 'btn-warning',
-                        action:
-                            function(dialogRef){
-                                $http.delete('/machine/' + machine.id).then(function () {
-                                    var idx = $scope.machines.findIndex(utils.isEqual, machine.id);
-                                    $scope.machines.splice(idx, 1);
-                                });
-                                dialogRef.close();
-                            }
-                    }, {
-                        label: 'No',
-                        action:
-                            function(dialogRef){
-                                dialogRef.close();
-                            }
-                    }]
-
+            $http.delete('/machine/' + machine.id).then(function () {
+                var idx = $scope.machines.findIndex(utils.isEqual, machine.id);
+                $scope.machines.splice(idx, 1);
             });
         };
 
