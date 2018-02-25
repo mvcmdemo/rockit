@@ -10,6 +10,7 @@ import java.util.List;
 @Service
 public class MachineService {
     private static final int STATUS_WAIT_TIMEOUT = 1000;
+    private static final int PORT_CHECK_TIMEOUT = 5000;
     private static final int STATUS_REFRESH_INTERVAL = 10000;
 
     private MachineDAO machineDAO;
@@ -48,6 +49,7 @@ public class MachineService {
                 for (Machine loadedMachine : loadedMachines) {
                     if (loadedMachine.getId() == cachedMachine.getId()) {
                         loadedMachine.setState(cachedMachine.getState());
+                        loadedMachine.setPlatform(cachedMachine.getPlatform());
                     }
                 }
             }
@@ -67,6 +69,9 @@ public class MachineService {
             if (machines != null) {
                 for (Machine machine : machines) {
                     machine.setState(getState(machine));
+                    if (machine.getPlatform() == MachinePlatforms.UNKNOWN && machine.getState() == MachineStates.ONLINE) {
+                        machine.setPlatform(getPlatform(machine));
+                    }
                 }
                 try {
                     Thread.sleep(STATUS_REFRESH_INTERVAL);
@@ -85,5 +90,9 @@ public class MachineService {
             return MachineStates.OFFLINE;
         }
         return isReachable ? MachineStates.ONLINE : MachineStates.OFFLINE;
+    }
+
+    private MachinePlatforms getPlatform(Machine machine) {
+        return network.getHostPlatform(machine.getHost(), PORT_CHECK_TIMEOUT);
     }
 }

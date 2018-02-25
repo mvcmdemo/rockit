@@ -17,6 +17,7 @@ public class Machine {
     private String description;
     private Set<Group> groups = new HashSet<>();
     private volatile MachineStates state = MachineStates.OFFLINE;
+    private volatile MachinePlatforms platform = MachinePlatforms.UNKNOWN;
 
     @Id
     @Column(name="MACHINE_ID")
@@ -93,5 +94,14 @@ public class Machine {
 
     public void setState(MachineStates state) {
         this.state = state;
+    }
+
+    @Transient
+    public MachinePlatforms getPlatform() {
+        return platform;
+    }
+
+    public void setPlatform(MachinePlatforms platform) {
+        this.platform = platform;
     }
 }
