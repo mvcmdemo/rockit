@@ -87,16 +87,13 @@ public class SSHClient {
         } catch (JSchException e) {
             throw new SSHException(String.format("Unable to open channel. %s", e.getMessage()), e);
         }
-
         channel.setInputStream(sendBuffer.getInputStream());
         channel.setOutputStream(receiveBuffer.getOutputStream());
-
         try {
             channel.connect(CONNECTION_TIMEOUT);
         } catch (JSchException e) {
             throw new SSHException(String.format("Unable to connect channel. %s", e.getMessage()), e);
         }
-
         this.receiveBuffer = receiveBuffer;
         this.sendBuffer = sendBuffer;
     }

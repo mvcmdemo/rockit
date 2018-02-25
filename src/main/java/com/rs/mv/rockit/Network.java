@@ -26,7 +26,6 @@ public class Network {
 
     public boolean isRemotePortOpen(String host, int port, int timeout) {
         Socket s = null;
-        String reason = null;
         boolean portOpen = false;
         try {
             s = new Socket();
