@@ -19,10 +19,20 @@
         <div class="container">
             <nav class="navbar navbar-inverse bg-inverse fixed-top">
                 <div class="navbar-inner row" style="padding-left:20px; padding-right:20px">
+                    <div class="pull-left">
                     <a class="navbar-brand" href="#">
                         <img src="/img/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
                         <span>ROCKIT</span>
                     </a>
+                    </div>
+                    <div id="loginform">
+                        <form class="form-inline my-2 my-lg-0">
+                            <input class="form-control mr-sm-2" type="text" placeholder="Username">
+                            <input class="form-control mr-sm-2" type="password" placeholder="Password">
+                            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Sing in</button>
+                        </form>
+                    </div>
+
                     <!--<div style="left: 10%; position: absolute">
                         <ul class="nav navbar-nav" style="flex-direction: row; ">
                             <li class="nav-item">
@@ -37,7 +47,9 @@
                         </ul>
                     </div>-->
                 </div>
+
             </nav>
+
         </div>
 
         <div id="accordion" role="tablist" aria-multiselectable="true">

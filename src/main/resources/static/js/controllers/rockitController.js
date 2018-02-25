@@ -1,6 +1,12 @@
 app.controller('rockitController', ['$scope', '$q', '$log', '$window', '$timeout', '$http', '$interval', '$rootScope', '$uibModal', 'editableOptions', 'utils', 'dataService', '$window',
     function AdminController($scope, $q, $log, $window, $timeout, $http, $interval, $rootScope, $uibModal, editableOptions, utils, dataService, $window) {
 
+
+        $(window).resize(function(){
+            $('#loginform').css('margin-left',($window.innerWidth - 750) + 'px');
+        });
+        $(window).resize();
+
         $scope.animationsEnabled = true;
 
         $scope.sharedService = dataService;
