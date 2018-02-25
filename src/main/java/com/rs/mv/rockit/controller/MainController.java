@@ -2,6 +2,7 @@ package com.rs.mv.rockit.controller;
 
 import com.rs.mv.rockit.Machine;
 import com.rs.mv.rockit.MachineService;
+import com.rs.mv.rockit.RDPGenerator;
 import com.rs.mv.rockit.dao.GroupDAO;
 import com.rs.mv.rockit.exception.DAOException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,17 +16,20 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
 
 @Controller
 public class MainController {
     private GroupDAO groupDAO;
     private MachineService machineService;
+    private RDPGenerator rdpGenerator;
 
     @Autowired
-    public MainController(GroupDAO groupDAO, MachineService machineService) {
+    public MainController(GroupDAO groupDAO, MachineService machineService, RDPGenerator rdpGenerator) {
         this.groupDAO = groupDAO;
         this.machineService = machineService;
+        this.rdpGenerator = rdpGenerator;
     }
 
     @RequestMapping(value = "/healthcheck", method = {RequestMethod.GET, RequestMethod.HEAD})
@@ -95,6 +99,20 @@ public class MainController {
             response = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(resp);
         }
         return response;
+    }
+
+    @RequestMapping(value = "/rdp/{id}", method = {RequestMethod.GET, RequestMethod.HEAD})
+    public void getRDP(@PathVariable("id") long id, HttpServletResponse response) {
+        try {
+            Machine machine = machineService.getById(id);
+            rdpGenerator.setMachine(machine);
+            response.setContentType("application/octet-stream");
+            response.setHeader("Content-disposition", "attachment; filename=" + machine.getHost() + ".rdp");
+            response.getOutputStream().print(rdpGenerator.getRDP());
+            response.flushBuffer();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @RequestMapping(value = "/test", method = {RequestMethod.GET, RequestMethod.HEAD})
