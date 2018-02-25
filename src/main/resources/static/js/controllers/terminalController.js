@@ -6,7 +6,7 @@ app.controller('terminalController', function ($scope) {
     //         console.log('user disconnected');
     //     });
     // });
-    $scope.runTerminal = function(targetMachineID) {
+    $scope.runTerminal = function(targetMachineID, targetMachineName) {
         Terminal.applyAddon(fit);
         var term = new Terminal();
         term.open(document.getElementById('#terminal'));
@@ -14,7 +14,8 @@ app.controller('terminalController', function ($scope) {
         //term.write('$ ');
         term.focus();
         term.fit();
-        term.writeln("Connecting to " + targetMachineID + " ...");
+        term.writeln("Connecting to " + targetMachineName + " ...");
+        document.title = "targetMachineName";
         window.addEventListener('resize', function () {
             term.fit();
         }, false);

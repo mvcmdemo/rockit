@@ -49,8 +49,14 @@ public class MainController {
     }
 
     @RequestMapping("/terminal/{id}")
-    public String terminal(Model model, @PathVariable long id) {
-        model.addAttribute("machineID", id);
+    public String terminal(Model model, @PathVariable long id) throws Exception {
+        Machine machine = machineService.getById(id);
+        if (machine != null) {
+            model.addAttribute("machineID", id);
+            model.addAttribute("machineHost", machine.getHost());
+        } else {
+            throw new Exception("Unable to find machine with specified ID");
+        }
         return "terminal";
     }
 

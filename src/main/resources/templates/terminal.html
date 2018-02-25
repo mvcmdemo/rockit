@@ -24,8 +24,8 @@
         }
       </style>
     </head>
-    <body ng-controller="terminalController" th:attr="ng-init='targetMachineID='+${machineID}">
-      <div id="terminal" ng-init="runTerminal(targetMachineID)"></div>
+    <body ng-controller="terminalController" th:attr="ng-init='targetMachineID='+${machineID} + ';targetMachineHost='+${machineHost}">
+      <div id="terminal" ng-init="runTerminal(targetMachineID, targetMachineHost)"></div>
 
     </body>
   </html>
