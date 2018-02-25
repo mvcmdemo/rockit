@@ -45,7 +45,7 @@ app.controller('rockitController', ['$scope', '$q', '$log', '$window', '$timeout
 
         $scope.addMachine = function() {
             var machine = {
-                id: utils.IDgenerator(),
+                id: 0,
                 name: '',
                 host: '',
                 user: '',
