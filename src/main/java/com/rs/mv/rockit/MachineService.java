@@ -5,7 +5,9 @@ import com.rs.mv.rockit.exception.DAOException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class MachineService {
@@ -94,5 +96,21 @@ public class MachineService {
             return MachineStates.OFFLINE;
         }
         return isReachable ? MachineStates.ONLINE : MachineStates.OFFLINE;
+    }
+
+    public Map<Long, MachineStates> getMachineStates() {
+        Map<Long, MachineStates> states = new HashMap<>();
+        for (Machine machine : machines) {
+            states.put(machine.getId(), machine.getState());
+        }
+        return states;
+    }
+
+    public Map<Long, User> getMachineUsers() {
+        Map<Long, User> users = new HashMap<>();
+        for (Machine machine : machines) {
+            users.put(machine.getId(), machine.getUsedBy());
+        }
+        return users;
     }
 }

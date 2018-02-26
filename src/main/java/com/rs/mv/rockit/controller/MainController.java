@@ -76,6 +76,23 @@ public class MainController {
         return response;
     }
 
+    @RequestMapping(value = "/machine_states", method = {RequestMethod.GET, RequestMethod.HEAD})
+    public ResponseEntity<ModelMap> getMachineStates() {
+        ModelMap resp = new ModelMap();
+        ResponseEntity<ModelMap> response;
+        try {
+            resp.put("states", machineService.getMachineStates());
+            resp.put("machine_users", machineService.getMachineUsers());
+            resp.put("status", "ok");
+            response = ResponseEntity.ok(resp);
+        } catch (Exception e) {
+            resp.put("status", "error");
+            resp.put("error", e.getMessage());
+            response = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(resp);
+        }
+        return response;
+    }
+
     @RequestMapping(value = "/machines", method = {RequestMethod.POST, RequestMethod.PUT})
     public ResponseEntity<ModelMap> saveMachine(@RequestBody Machine machine) {
         ModelMap resp = new ModelMap();
