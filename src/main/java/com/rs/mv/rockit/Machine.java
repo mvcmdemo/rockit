@@ -106,9 +106,8 @@ public class Machine {
         this.platform = platform;
     }
 
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(name = "USERS", joinColumns = { @JoinColumn(name = "USEDBY", nullable = true, updatable = false) },
-            inverseJoinColumns = { @JoinColumn(name = "USER_ID", nullable = false, updatable = false) })
+    @ManyToOne
+    @JoinColumn(name="USEDBY", nullable=true)
     public User getUsedBy() {
         return usedBy;
     }
