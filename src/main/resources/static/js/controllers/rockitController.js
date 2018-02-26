@@ -3,7 +3,7 @@ app.controller('rockitController', ['$scope', '$q', '$log', '$window', '$timeout
 
 
         $(window).resize(function(){
-            $('#loginform').css('margin-left',($window.innerWidth - 750) + 'px');
+            $('#loginform').css('margin-left',($window.innerWidth - $('#loginform').innerWidth() - 200) + 'px');
         });
         $(window).resize();
 
