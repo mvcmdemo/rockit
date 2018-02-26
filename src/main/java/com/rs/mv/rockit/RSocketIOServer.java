@@ -31,6 +31,7 @@ public class RSocketIOServer {
     private SocketIOServer server;
     private ExecutorService receiverThreadPool;
     private Map<UUID, SocketIOClientData> clients = new ConcurrentHashMap<>();
+    private Map<UUID, TextWindowSize> sizes = new ConcurrentHashMap<>();
     private Thread serverThread;
 
     @Autowired
@@ -51,6 +52,7 @@ public class RSocketIOServer {
         server = new SocketIOServer(config);
         server.addConnectListener(this::clientConnected);
         server.addEventListener("data", String.class, this::dataEventProcess);
+        server.addEventListener("geometry", TextWindowSize.class, this::resizeEventProcess);
         server.addDisconnectListener(this::clientDisconnected);
     }
 
@@ -101,6 +103,10 @@ public class RSocketIOServer {
         Future<?> receiverFuture = receiverThreadPool.submit(() -> receiveFromSSH(socketIOClient, receiverBuffer));
         SocketIOClientData clientData = new SocketIOClientData(ssh, receiverFuture, socketIOClient);
         clients.put(socketIOClient.getSessionId(), clientData);
+        TextWindowSize sizeData = sizes.get(socketIOClient.getSessionId());
+        if (sizeData != null) {
+            ssh.setSize(sizeData.getCols(), sizeData.getRows(), 0, 0);
+        }
     }
 
     private void clientDisconnected(SocketIOClient socketIOClient) {
@@ -112,6 +118,7 @@ public class RSocketIOServer {
             }
         }
         clients.remove(socketIOClient.getSessionId());
+        sizes.remove(socketIOClient.getSessionId());
     }
 
     @SuppressWarnings("unused")
@@ -127,6 +134,20 @@ public class RSocketIOServer {
             ssh.getSendBuffer().getOutputStream().flush();
         } catch (Exception e) {
             sendError(client, String.format("Error writing data to SSH connection. %s", e.getMessage()));
+        }
+    }
+
+    private void resizeEventProcess(SocketIOClient client, TextWindowSize data, AckRequest ackRequest) {
+        sizes.put(client.getSessionId(), data);
+        SocketIOClientData clientData = clients.get(client.getSessionId());
+        if (clientData == null) {
+            return;
+        }
+        SSHClient ssh = clientData.getSsh();
+        try {
+            ssh.setSize(data.getCols(), data.getRows(), 0, 0);
+        } catch (Exception e) {
+            return;
         }
     }
 
@@ -163,7 +184,7 @@ public class RSocketIOServer {
                 return;
             }
             if (value > -1) {
-                client.sendEvent("data", String.valueOf((char) value));
+                client.sendEvent("data", (char)value);
             } else {
                 try {
                     Thread.sleep(1);
