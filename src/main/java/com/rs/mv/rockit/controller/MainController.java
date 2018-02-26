@@ -1,9 +1,8 @@
 package com.rs.mv.rockit.controller;
 
-import com.rs.mv.rockit.Machine;
-import com.rs.mv.rockit.MachineService;
-import com.rs.mv.rockit.RDPGenerator;
+import com.rs.mv.rockit.*;
 import com.rs.mv.rockit.dao.GroupDAO;
+import com.rs.mv.rockit.dao.UserDAO;
 import com.rs.mv.rockit.exception.DAOException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,12 +21,14 @@ import java.time.LocalDateTime;
 @Controller
 public class MainController {
     private GroupDAO groupDAO;
+    private UserDAO userDAO;
     private MachineService machineService;
     private RDPGenerator rdpGenerator;
 
     @Autowired
-    public MainController(GroupDAO groupDAO, MachineService machineService, RDPGenerator rdpGenerator) {
+    public MainController(GroupDAO groupDAO, UserDAO userDAO, MachineService machineService, RDPGenerator rdpGenerator) {
         this.groupDAO = groupDAO;
+        this.userDAO = userDAO;
         this.machineService = machineService;
         this.rdpGenerator = rdpGenerator;
     }
@@ -139,16 +140,97 @@ public class MainController {
         }
     }
 
-    @RequestMapping(value = "/test", method = {RequestMethod.GET, RequestMethod.HEAD})
-    public ResponseEntity<ModelMap> test() {
+    @RequestMapping(value = "/groups", method = {RequestMethod.GET, RequestMethod.HEAD})
+    public ResponseEntity<ModelMap> getGroups() {
         ModelMap resp = new ModelMap();
         ResponseEntity<ModelMap> response;
         try {
+            resp.put("groups", groupDAO.getAll());
             resp.put("status", "ok");
             response = ResponseEntity.ok(resp);
         } catch (Exception e) {
             resp.put("status", "error");
             resp.put("error", e.getMessage());
+            response = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(resp);
+        }
+        return response;
+    }
+
+    @RequestMapping(value = "/groups", method = {RequestMethod.POST, RequestMethod.PUT})
+    public ResponseEntity<ModelMap> saveGroup(@RequestBody Group group) {
+        ModelMap resp = new ModelMap();
+        ResponseEntity<ModelMap> response;
+        try {
+            groupDAO.save(group);
+            resp.put("status", "ok");
+            response = ResponseEntity.ok(resp);
+        } catch (DAOException daoe) {
+            resp.put("status", "error");
+            resp.put("error", daoe.getMessage());
+            response = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(resp);
+        }
+        return response;
+    }
+
+    @RequestMapping(value = "/groups/{id}", method = {RequestMethod.DELETE})
+    public ResponseEntity<ModelMap> deleteMachine(@PathVariable("id") long id) {
+        ModelMap resp = new ModelMap();
+        ResponseEntity<ModelMap> response;
+        try {
+            groupDAO.deleteById(id);
+            resp.put("status", "ok");
+            response = ResponseEntity.ok(resp);
+        } catch (DAOException daoe) {
+            resp.put("status", "error");
+            resp.put("error", daoe.getMessage());
+            response = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(resp);
+        }
+        return response;
+    }
+
+    @RequestMapping(value = "/users", method = {RequestMethod.GET, RequestMethod.HEAD})
+    public ResponseEntity<ModelMap> getUsers() {
+        ModelMap resp = new ModelMap();
+        ResponseEntity<ModelMap> response;
+        try {
+            resp.put("users", userDAO.getAll());
+            resp.put("status", "ok");
+            response = ResponseEntity.ok(resp);
+        } catch (Exception e) {
+            resp.put("status", "error");
+            resp.put("error", e.getMessage());
+            response = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(resp);
+        }
+        return response;
+    }
+
+    @RequestMapping(value = "/users", method = {RequestMethod.POST, RequestMethod.PUT})
+    public ResponseEntity<ModelMap> saveUser(@RequestBody User user) {
+        ModelMap resp = new ModelMap();
+        ResponseEntity<ModelMap> response;
+        try {
+            userDAO.save(user);
+            resp.put("status", "ok");
+            response = ResponseEntity.ok(resp);
+        } catch (DAOException daoe) {
+            resp.put("status", "error");
+            resp.put("error", daoe.getMessage());
+            response = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(resp);
+        }
+        return response;
+    }
+
+    @RequestMapping(value = "/users/{id}", method = {RequestMethod.DELETE})
+    public ResponseEntity<ModelMap> deleteUser(@PathVariable("id") long id) {
+        ModelMap resp = new ModelMap();
+        ResponseEntity<ModelMap> response;
+        try {
+            userDAO.deleteById(id);
+            resp.put("status", "ok");
+            response = ResponseEntity.ok(resp);
+        } catch (DAOException daoe) {
+            resp.put("status", "error");
+            resp.put("error", daoe.getMessage());
             response = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(resp);
         }
         return response;

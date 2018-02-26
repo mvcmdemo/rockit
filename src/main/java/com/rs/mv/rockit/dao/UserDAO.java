@@ -28,4 +28,8 @@ public class UserDAO {
     public void delete(User user) throws DAOException {
         dao.delete(user);
     }
+
+    public void deleteById(long id) throws DAOException {
+        dao.deleteById(id);
+    }
 }
