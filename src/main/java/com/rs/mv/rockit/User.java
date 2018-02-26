@@ -15,6 +15,7 @@ public class User {
     private String password;
     private String name;
     private String email;
+    private boolean isAdmin;
     @JsonIgnoreProperties({"machines", "users"})
     private Set<Group> groups = new HashSet<>();
     @JsonIgnoreProperties({"groups", "usedBy"})
@@ -86,5 +87,14 @@ public class User {
 
     public void setUsedMachines(Set<Machine> usedMachines) {
         this.usedMachines = usedMachines;
+    }
+
+    @Column(name="ROLEADMIN")
+    public boolean isAdmin() {
+        return isAdmin;
+    }
+
+    public void setAdmin(boolean admin) {
+        isAdmin = admin;
     }
 }
