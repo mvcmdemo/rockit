@@ -4,6 +4,7 @@ app.controller('rockitController', ['$scope', '$q', '$log', '$window', '$timeout
 
         $(window).resize(function(){
             $('#loginform').css('margin-left',($window.innerWidth - $('#loginform').innerWidth() - 200) + 'px');
+            $('#logoutform').css('margin-left',($window.innerWidth - $('#logoutform').innerWidth() - 250) + 'px');
         });
         $(window).resize();
 
@@ -12,6 +13,31 @@ app.controller('rockitController', ['$scope', '$q', '$log', '$window', '$timeout
         $scope.sharedService = dataService;
 
         editableOptions.theme = 'bs3';
+
+        $scope.users = [{username: 'admin', password: 'admin', role: 'admin', groups: []},
+                        {username: 'sbxa', password: 'sbxa', role: 'user', groups: []},
+                        {username: 'mv', password: 'mv', role: 'user', groups: []}];
+
+        $scope.user = {username: 'admin', password: 'admin', role: 'admin', groups: []};
+
+        $scope.login = function() {
+            var username = $('#usernameInput').val();
+            var password = $('#passwordInput').val();
+
+            var isFound = false;
+            $scope.users.forEach(function(element, index){
+                if (element.username === username && element.password === password){
+                    $scope.user = $scope.users[index];
+                    isFound = true;
+                }
+            });
+            if (!isFound)
+                alert('Username or password is incorrect!');
+        };
+
+        $scope.logout = function() {
+            $scope.user = '';
+        };
 
         $scope.platforms = ['Windows', 'Unix'];
 

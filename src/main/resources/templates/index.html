@@ -25,34 +25,27 @@
                         <span>ROCKIT</span>
                     </a>
                     </div>
-                    <div id="loginform">
+                    <div id="loginform" ng-show="user === ''">
                         <form class="form-inline my-2 my-lg-0">
-                            <input class="form-control mr-sm-2" type="text" placeholder="Username">
-                            <input class="form-control mr-sm-2" type="password" placeholder="Password">
-                            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Sing in</button>
+                            <input id="usernameInput" class="form-control mr-sm-2" type="text" placeholder="Username">
+                            <input id="passwordInput" class="form-control mr-sm-2" type="password" placeholder="Password">
+                            <button class="btn btn-outline-success my-2 my-sm-0" type="submit" ng-click="login()">Sign in</button>
                         </form>
                     </div>
-
-                    <!--<div style="left: 10%; position: absolute">
-                        <ul class="nav navbar-nav" style="flex-direction: row; ">
-                            <li class="nav-item">
-                                <a class="nav-link" href="#machines" style="padding-right: 24px; padding-left: 24px">Machines</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#groups" style="padding-right: 24px; padding-left: 24px">Users</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#users" style="padding-right: 24px; padding-left: 24px">Groups</a>
-                            </li>
-                        </ul>
-                    </div>-->
+                    <div id="logoutform" ng-show="user !== ''">
+                        <form class="form-inline my-2 my-lg-0">
+                            <span type="text" ng-bind="user.username" style="color: white; margin-right: 10px; font-size: 1.5em"></span>
+                            <button class="btn btn-outline-success my-2 my-sm-0" type="button" ng-click="logout()">Sign out</button>
+                        </form>
+                    </div>
                 </div>
 
             </nav>
 
         </div>
 
-        <div id="accordion" role="tablist" aria-multiselectable="true">
+        <div id="accordion" role="tablist" aria-multiselectable="true" ng-show="user !== ''">
+            <!-- Machines -->
             <div class="card">
                 <div class="card-header" role="tab" id="headingMachines">
                     <h5 class="mb-0">
@@ -62,7 +55,7 @@
 
                 <div id="collapseMachines" class="collapse show" role="tabpanel" aria-labelledby="headingMachines">
                     <div class="card-block">
-                        <!-- Machines -->
+
                         <!--<h2 id="machines" href="#machines">Machines</h2>-->
                         <div class="table-responsive">
                             <table class="table table-striped">
@@ -104,7 +97,7 @@
                     </div>
                 </div>
             </div>
-            <div class="card">
+            <div class="card" ng-show="user.role === 'admin'">
                 <div class="card-header" role="tab" id="headingGroups">
                     <h5 class="mb-0">
                         <h2 class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseGroups" aria-expanded="false" aria-controls="collapseGroups" style="cursor: pointer;">Groups</h2>
@@ -135,7 +128,7 @@
                     </div>
                 </div>
             </div>
-            <div class="card">
+            <div class="card" ng-show="user.role === 'admin'">
                 <div class="card-header" role="tab" id="headingUsers">
                     <h5 class="mb-0">
                         <h2 class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseUsers" aria-expanded="false" aria-controls="collapseUsers" style="cursor: pointer;">Users</h2>
