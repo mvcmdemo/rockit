@@ -156,4 +156,10 @@ public class SSHClient {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public void setSize(int col, int row, int wp, int hp) {
+        if (channel != null) {
+            ((ChannelShell) channel).setPtySize(col, row, wp, hp);
+        }
+    }
 }

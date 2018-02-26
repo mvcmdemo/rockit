@@ -19,10 +19,16 @@ app.controller('terminalController', function ($scope) {
         term.fit();
         term.writeln("Connecting to " + $scope.targetMachineHost + " ...");
         document.title = $scope.targetMachineHost;
+        var socket = io('http://localhost:8081/?machine_id=' + $scope.targetMachineID);
+
         window.addEventListener('resize', function () {
             term.fit();
+            socket.emit('geometry', {cols : term.cols, rows : term.rows})
         }, false);
-        var socket = io('http://localhost:8081/?machine_id=' + $scope.targetMachineID);
+
+        socket.on('connect', function () {
+            socket.emit('geometry', {cols : term.cols, rows : term.rows})
+        })
 
         term.on('data', function (data) {
             socket.emit('data', data);
