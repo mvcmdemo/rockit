@@ -76,8 +76,13 @@
                                     <td>{{machine.name}}</td>
                                     <td>{{machine.host}}</td>
                                     <td>{{machine.platform}}</td>
-                                    <td><img ng-src="{{machine.usedBy !== null || machine.state !== 'ONLINE' ? '/img/red_square.png' : '/img/green_square.png'}}" style="width:16px;height:16px;" border="0">
-                                        <a ng-href="#"><span style="margin-left:10px;" ng-click="sendMessage(machine.usedBy)">{{machine.usedBy == null ? '' : machine.usedBy.name}}</span></a>
+                                    <td>
+                                        <div>
+                                            <img ng-src="{{machine.usedBy !== null || machine.state !== 'ONLINE' ? '/img/red_square.png' : '/img/green_square.png'}}" style="width:16px;height:16px;" border="0">
+                                            <span style="margin-left:10px;">{{machine.usedBy == null ? '' : machine.usedBy.name}}</span>
+                                            <button type="button" class="btn btn-secondary btn-sm" ng-show="machine.usedBy != null" ng-click="sendMessage(machine.usedBy)"><i class="fa fa-envelope" aria-hidden="true"></i></button>
+                                        </div>
+
                                     </td>
                                     <td>{{machine.description}}</td>
                                     <td ng-show="user.admin">
