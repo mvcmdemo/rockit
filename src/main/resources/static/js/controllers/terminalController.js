@@ -18,7 +18,7 @@ app.controller('terminalController', function ($scope) {
         term.focus();
         term.fit();
         term.writeln("Connecting to " + $scope.targetMachineHost + " ...");
-        document.title = "targetMachineName";
+        document.title = $scope.targetMachineHost;
         window.addEventListener('resize', function () {
             term.fit();
         }, false);
