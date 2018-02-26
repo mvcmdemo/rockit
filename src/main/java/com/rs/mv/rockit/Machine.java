@@ -1,5 +1,6 @@
 package com.rs.mv.rockit;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -15,9 +16,11 @@ public class Machine {
     private String user;
     private String password;
     private String description;
+    @JsonIgnoreProperties({"machines", "users"})
     private Set<Group> groups = new HashSet<>();
     private volatile MachineStates state = MachineStates.OFFLINE;
     private MachinePlatforms platform = MachinePlatforms.Windows;
+    @JsonIgnoreProperties({"groups", "usedMachines"})
     private User usedBy;
 
     @Id
@@ -77,7 +80,7 @@ public class Machine {
         this.name = name;
     }
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinTable(name = "MACHINE_GROUPS", joinColumns = { @JoinColumn(name = "MACHINE_ID", nullable = false, updatable = false) },
             inverseJoinColumns = { @JoinColumn(name = "GROUP_ID", nullable = false, updatable = false) })
     public Set<Group> getGroups() {

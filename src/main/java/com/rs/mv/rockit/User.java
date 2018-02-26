@@ -1,5 +1,6 @@
 package com.rs.mv.rockit;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -14,7 +15,9 @@ public class User {
     private String password;
     private String name;
     private String email;
+    @JsonIgnoreProperties({"machines", "users"})
     private Set<Group> groups = new HashSet<>();
+    @JsonIgnoreProperties({"groups", "usedBy"})
     private Set<Machine> usedMachines;
 
     @Id
@@ -65,7 +68,7 @@ public class User {
         this.email = email;
     }
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinTable(name = "USER_GROUPS", joinColumns = { @JoinColumn(name = "USER_ID", nullable = false, updatable = false) },
             inverseJoinColumns = { @JoinColumn(name = "GROUP_ID", nullable = false, updatable = false) })
     public Set<Group> getGroups() {
@@ -76,7 +79,7 @@ public class User {
         this.groups = groups;
     }
 
-    @OneToMany(mappedBy = "usedBy")
+    @OneToMany(mappedBy = "usedBy", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     public Set<Machine> getUsedMachines() {
         return usedMachines;
     }
