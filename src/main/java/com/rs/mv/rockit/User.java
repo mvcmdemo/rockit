@@ -15,6 +15,7 @@ public class User {
     private String name;
     private String email;
     private Set<Group> groups = new HashSet<>();
+    private Set<Machine> usedMachines;
 
     @Id
     @Column(name="USER_ID")
@@ -73,5 +74,14 @@ public class User {
 
     public void setGroups(Set<Group> groups) {
         this.groups = groups;
+    }
+
+    @OneToMany(mappedBy = "usedBy")
+    public Set<Machine> getUsedMachines() {
+        return usedMachines;
+    }
+
+    public void setUsedMachines(Set<Machine> usedMachines) {
+        this.usedMachines = usedMachines;
     }
 }

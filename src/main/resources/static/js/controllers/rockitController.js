@@ -54,8 +54,12 @@ app.controller('rockitController', ['$scope', '$q', '$log', '$window', '$timeout
             });
         };
 
-        $scope.terminal = function(machine) {
-            $window.open('/terminal/' + machine.id, '_blank');
+        $scope.connectMachine = function(machine) {
+            if (machine.platform === 'Windows') {
+                $window.open('/rdp/' + machine.id, '_self');
+            } else {
+                $window.open('/terminal/' + machine.id, '_blank');
+            }
         };
 
         $scope.deleteMachine = function(machine) {
