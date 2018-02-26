@@ -34,7 +34,7 @@
                     </div>
                     <div id="logoutform" ng-show="user !== ''">
                         <form class="form-inline my-2 my-lg-0">
-                            <span type="text" ng-bind="user.username" style="color: white; margin-right: 10px; font-size: 1.5em"></span>
+                            <span type="text" ng-bind="user.login" style="color: white; margin-right: 10px; font-size: 1.5em"></span>
                             <button class="btn btn-outline-success my-2 my-sm-0" type="button" ng-click="logout()">Sign out</button>
                         </form>
                     </div>
@@ -76,9 +76,11 @@
                                     <td>{{machine.name}}</td>
                                     <td>{{machine.host}}</td>
                                     <td>{{machine.platform}}</td>
-                                    <td><img ng-src="{{machine.usedBy !== null || machine.state !== 'ONLINE' ? '/img/red_square.png' : '/img/green_square.png'}}" style="width:16px;height:16px;" border="0">{{machine.usedBy == null ? '' : machine.usedBy}}</td>
+                                    <td><img ng-src="{{machine.usedBy !== null || machine.state !== 'ONLINE' ? '/img/red_square.png' : '/img/green_square.png'}}" style="width:16px;height:16px;" border="0">
+                                        <span style="margin-left:10px">{{machine.usedBy == null ? '' : machine.usedBy.name}}</span>
+                                    </td>
                                     <td>{{machine.description}}</td>
-                                    <td ng-show="user.role === 'admin'">
+                                    <td ng-show="user.admin">
                                         <button type="button" class="btn btn-primary btn-sm" ng-click="editMachine(machine)"><i class="fa fa-edit" aria-hidden="true"></i></button>
                                         <button type="button" class="btn btn-danger btn-sm" ng-click="deleteMachine(machine)"><i class="fa fa-close" aria-hidden="true"></i></button>
 
@@ -90,7 +92,7 @@
                                 </tr>
                                 </tbody>
                             </table>
-                            <div class="pull-right" ng-show="user.role === 'admin'">
+                            <div class="pull-right" ng-show="user.admin">
                                 <button type="button" class="btn btn-secondary" ng-click="addMachine()">Add Machine</button>
                             </div>
                         </div>
@@ -98,7 +100,7 @@
                 </div>
             </div>
             <!-- Groups -->
-            <div class="card" ng-show="user.role === 'admin'">
+            <div class="card" ng-show="user.admin">
                 <div class="card-header" role="tab" id="headingGroups">
                     <h5 class="mb-0">
                         <h2 class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseGroups" aria-expanded="false" aria-controls="collapseGroups" style="cursor: pointer;">Groups</h2>
@@ -112,12 +114,12 @@
                                 <tr ng-repeat="group in groups">
                                     <td>
                                         <div>
-                                            <a href="#" editable-text="group.name" onsubmit="alert('submit!')" e-required >{{ group.name || 'empty' }}</a>
+                                            <a href="#" onbeforesave="acceptGroup($data, $index)" editable-text="group.name" onsubmit="alert('submit!')" e-required >{{ group.name || 'empty' }}</a>
                                         </div>
                                     </td>
                                     <td>
                                         <div class="pull-right">
-                                            <button type="button" class="btn btn-danger btn-sm"><i class="fa fa-close" aria-hidden="true"></i></button>
+                                            <button type="button" class="btn btn-danger btn-sm" ng-click="deleteGroup(group.id)"><i class="fa fa-close" aria-hidden="true"></i></button>
                                         </div>
                                     </td>
                                 </tr>
@@ -130,7 +132,7 @@
                 </div>
             </div>
             <!-- Users -->
-            <div class="card" ng-show="user.role === 'admin'">
+            <div class="card" ng-show="user.admin">
                 <div class="card-header" role="tab" id="headingUsers">
                     <h5 class="mb-0">
                         <h2 class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseUsers" aria-expanded="false" aria-controls="collapseUsers" style="cursor: pointer;">Users</h2>
@@ -144,23 +146,32 @@
                                 <thead>
                                     <tr>
                                         <th>Username</th>
+                                        <th>Login</th>
                                         <th>Role</th>
+                                        <th>Email</th>
                                         <th>Groups</th>
                                         <th></th>
                                     </tr>
                                 </thead>
                                 <tr ng-repeat="user in users">
                                     <td>
-                                        <div>{{user.username}}</div>
+                                        <div>{{user.name}}</div>
                                     </td>
                                     <td>
-                                        <div>{{user.role}}</div>
+                                        <div>{{user.login}}</div>
                                     </td>
                                     <td>
-                                        <div>{{user.groups}}</div>
+                                        <div>{{user.role ? 'admin' : 'user'}}</div>
+                                    </td>
+                                    <td>
+                                        <div>{{user.email}}</div>
+                                    </td>
+                                    <td>
+                                        <span ng-repeat="group in user.groups" style="margin-right: 5px">{{group.name}}</span>
                                     </td>
                                     <td>
                                         <div class="pull-right">
+                                            <button type="button" class="btn btn-primary btn-sm" ng-click="editUser(user)"><i class="fa fa-edit" aria-hidden="true"></i></button>
                                             <button type="button" class="btn btn-danger btn-sm"><i class="fa fa-close" aria-hidden="true"></i></button>
                                         </div>
                                     </td>
@@ -189,6 +200,7 @@
 
         <script src="js/controllers/rockitController.js"></script>
         <script src="js/controllers/MachineEditorController.js"></script>
+        <script src="js/controllers/UserEditorController.js"></script>
         <script src="js/controllers/terminalController.js"></script>
 
         <script src="js/services/dataService.js"></script>

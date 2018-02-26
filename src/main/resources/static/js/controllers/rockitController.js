@@ -14,11 +14,9 @@ app.controller('rockitController', ['$scope', '$q', '$log', '$window', '$timeout
 
         editableOptions.theme = 'bs3';
 
-        $scope.users = [{username: 'admin', password: 'admin', role: 'admin', groups: []},
-                        {username: 'sbxa', password: 'sbxa', role: 'user', groups: []},
-                        {username: 'mv', password: 'mv', role: 'user', groups: []}];
+        $scope.users = [];
 
-        $scope.user = {username: 'admin', password: 'admin', role: 'admin', groups: []};
+        $scope.user = {login: 'admin', password: 'admin', admin: true, groups: []};
 
         $scope.login = function() {
             var username = $('#usernameInput').val();
@@ -26,7 +24,7 @@ app.controller('rockitController', ['$scope', '$q', '$log', '$window', '$timeout
 
             var isFound = false;
             $scope.users.forEach(function(element, index){
-                if (element.username === username && element.password === password){
+                if (element.login === username && element.password === password){
                     $scope.user = $scope.users[index];
                     isFound = true;
                 }
@@ -47,6 +45,8 @@ app.controller('rockitController', ['$scope', '$q', '$log', '$window', '$timeout
         $scope.getResources = function() {
             $scope.getAllMachines();
             $scope.getAllGroups();
+            $scope.getAllUsers();
+
             $scope.startMachineMonitoring();
         };
 
@@ -77,16 +77,18 @@ app.controller('rockitController', ['$scope', '$q', '$log', '$window', '$timeout
         }
 
         $scope.isMachineAvailForUser = function(machine) {
-            if($scope.user.role === 'admin') {
+            if($scope.user.admin) {
                 return true;
             }
             var isValid = false;
-            $scope.user.groups.forEach(function (group) {
-                var idx = machine.groups.findIndex(utils.isEqual, group.id);
-                if (idx > -1) {
-                    isValid = true;
-                }
-            });
+            if ($scope.user !== '') {
+                $scope.user.groups.forEach(function (group) {
+                    var idx = machine.groups.findIndex(utils.isEqual, group.id);
+                    if (idx > -1) {
+                        isValid = true;
+                    }
+                });
+            }
             return isValid;
         };
 
@@ -102,13 +104,6 @@ app.controller('rockitController', ['$scope', '$q', '$log', '$window', '$timeout
             } else {
                 $window.open('/terminal/' + machine.id, '_blank');
             }
-        };
-
-        $scope.deleteMachine = function(machine) {
-            $http.delete('/machine/' + machine.id).then(function () {
-                var idx = $scope.machines.findIndex(utils.isEqual, machine.id);
-                $scope.machines.splice(idx, 1);
-            });
         };
 
         $scope.editMachine = function(machine) {
@@ -157,26 +152,31 @@ app.controller('rockitController', ['$scope', '$q', '$log', '$window', '$timeout
                 }
             });
             modalInstance.result.then(function (returnMachine) {
-                if (isNew) {
-                    // add a new machine
-                    $http.post("/machines", returnMachine).then(
-                        function () {
+                $http.post("/machines", returnMachine).then(
+                    function () {
+                        if (isNew) {
                             $scope.machines.push(returnMachine);
-                        }, function () {
-                            alert("Failed to save '" + returnMachine.name + "' machine");
+                        } else {
+                            var idx = $scope.machines.findIndex(utils.isEqual, id);
+                            if(idx > -1) {
+                                $scope.machines.splice(idx, 1, returnMachine);
+                            }
+                        }
+                    }, function () {
+                        alert("Failed to save '" + returnMachine.name + "' machine");
                     });
 
-                } else {
-                    // edit an existing machine
-                    var idx = $scope.machines.findIndex(utils.isEqual, id);
-                    if(idx > -1) {
-                        $scope.machines.splice(idx, 1, returnMachine);
-                    }
-                }
             }, function () {
                 return false;
             });
         }
+
+        $scope.deleteMachine = function(machine) {
+            $http.delete('/machines/' + machine.id).then(function () {
+                var idx = $scope.machines.findIndex(utils.isEqual, machine.id);
+                $scope.machines.splice(idx, 1);
+            });
+        };
 
         $scope.getAllGroups = function() {
             $http.get('/groups').then(function (response) {
@@ -193,6 +193,94 @@ app.controller('rockitController', ['$scope', '$q', '$log', '$window', '$timeout
                 alert('You can\'t add one more group');
             }
         };
+
+        $scope.acceptGroup = function(groupName, index){
+            var idx = $scope.groups.findIndex(utils.isEqualName, groupName);
+            // if we find group with the same name and it is not the same group return an error
+            if (idx > -1 && index !== idx) {
+                return "The group with the same name has already existed";
+            }
+            // if it's not the same group
+            if (idx !== index) {
+                var group = {id: 0, name: groupName};
+                $http.post('/groups', group);
+            }
+        };
+
+        $scope.deleteGroup = function(groupID) {
+            $http.delete('/groups/' + groupID).then(function () {
+                var idx = $scope.groups.findIndex(utils.isEqual, groupID);
+                $scope.groups.splice(idx, 1);
+            }, function (reason) {
+                alert('Failed to remove the group: ' + reason)
+            });
+        };
+
+        $scope.getAllUsers = function () {
+            $http.get('/users').then(function (response) {
+                $scope.users = response.data.users;
+            })
+        };
+
+        $scope.editUser = function(user) {
+            openUserEditor(user, false);
+        };
+
+        $scope.addUser = function() {
+            var user = {
+                id: 0,
+                login: '',
+                password: '',
+                name: '',
+                email: '',
+                admin: '',
+                groups: []
+            };
+            openUserEditor(user, true);
+        };
+
+        function openUserEditor(user, isNew) {
+            var id = user.id;
+            var modalInstance = $uibModal.open({
+                backdrop : false,
+                animation : $scope.animationsEnabled,
+                templateUrl : 'views/user.html',
+                controller : 'UserEditorController',
+                size : 'lg',
+                resolve : {
+                    user : function () {
+                        return user;
+                    },
+                    users : function () {
+                        return $scope.users;
+                    },
+                    groups : function () {
+                        return $scope.groups;
+                    },
+                    utils : function () {
+                        return utils;
+                    }
+                }
+            });
+            modalInstance.result.then(function (returnUser) {
+                $http.post("/users", returnUser).then(
+                    function () {
+                        if (isNew) {
+                            $scope.users.push(returnUser);
+                        } else {
+                            var idx = $scope.users.findIndex(utils.isEqual, id);
+                            if(idx > -1) {
+                                $scope.users.splice(idx, 1, returnUser);
+                            }
+                        }
+                    }, function () {
+                        alert("Failed to save '" + returnUser.name + "' user");
+                    });
+
+            }, function () {
+                return false;
+            });
+        }
 
         $rootScope.$on('http.error', function (event, status) {
             switch (status) {
