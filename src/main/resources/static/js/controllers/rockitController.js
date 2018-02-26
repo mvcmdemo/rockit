@@ -282,6 +282,28 @@ app.controller('rockitController', ['$scope', '$q', '$log', '$window', '$timeout
             });
         }
 
+        $scope.sendMessage = function(_user) {
+            var id = _user.id;
+            var modalInstance = $uibModal.open({
+                backdrop : false,
+                animation : $scope.animationsEnabled,
+                templateUrl : 'views/sendMessage.html',
+                controller : 'SendMessageController',
+                size : 'lg',
+                resolve : {
+                    user : function () {
+                        return _user;
+                    }
+                }
+            });
+            modalInstance.result.then(function (returnUser) {}
+
+            , function () {
+                return false;
+            });
+
+        };
+
         $rootScope.$on('http.error', function (event, status) {
             switch (status) {
 //				case  - 1:

@@ -77,7 +77,7 @@
                                     <td>{{machine.host}}</td>
                                     <td>{{machine.platform}}</td>
                                     <td><img ng-src="{{machine.usedBy !== null || machine.state !== 'ONLINE' ? '/img/red_square.png' : '/img/green_square.png'}}" style="width:16px;height:16px;" border="0">
-                                        <span style="margin-left:10px">{{machine.usedBy == null ? '' : machine.usedBy.name}}</span>
+                                        <a ng-href="#"><span style="margin-left:10px;" ng-click="sendMessage(machine.usedBy)">{{machine.usedBy == null ? '' : machine.usedBy.name}}</span></a>
                                     </td>
                                     <td>{{machine.description}}</td>
                                     <td ng-show="user.admin">
@@ -202,6 +202,7 @@
         <script src="js/controllers/MachineEditorController.js"></script>
         <script src="js/controllers/UserEditorController.js"></script>
         <script src="js/controllers/terminalController.js"></script>
+        <script src="js/controllers/SendMessageController.js"></script>
 
         <script src="js/services/dataService.js"></script>
         <script src="js/services/messageService.js"></script>
