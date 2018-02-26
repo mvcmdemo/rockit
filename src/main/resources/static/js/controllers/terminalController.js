@@ -6,7 +6,10 @@ app.controller('terminalController', function ($scope) {
     //         console.log('user disconnected');
     //     });
     // });
-    $scope.runTerminal = function(targetMachineID, targetMachineName) {
+    $scope.targetMachineID = $('#targetMachineID').val();
+    $scope.targetMachineHost = $('#targetMachineHost').val();
+
+    $scope.runTerminal = function() {
         Terminal.applyAddon(fit);
         var term = new Terminal();
         term.open(document.getElementById('#terminal'));
@@ -14,12 +17,12 @@ app.controller('terminalController', function ($scope) {
         //term.write('$ ');
         term.focus();
         term.fit();
-        term.writeln("Connecting to " + targetMachineName + " ...");
+        term.writeln("Connecting to " + $scope.targetMachineHost + " ...");
         document.title = "targetMachineName";
         window.addEventListener('resize', function () {
             term.fit();
         }, false);
-        var socket = io('http://localhost:8081/?machine_id=' + targetMachineID);
+        var socket = io('http://localhost:8081/?machine_id=' + $scope.targetMachineID);
 
         term.on('data', function (data) {
             socket.emit('data', data);

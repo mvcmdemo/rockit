@@ -1,5 +1,5 @@
   <!doctype html>
-  <html ng-app="terminal">
+  <html ng-app="terminal" xmlns:th="http://java.sun.com/JSP/Page">
     <head>
       <link rel="stylesheet" href="../lib/xterm/xterm.css" />
       <script src="../lib/xterm/xterm.js"></script>
@@ -19,13 +19,14 @@
           height: 100%;
           margin: 0;
         }
-        .wrapper {
-          min-height: 100%;
-        }
       </style>
     </head>
-    <body ng-controller="terminalController" th:attr="ng-init='targetMachineID='+${machineID} + ';targetMachineHost='+${machineHost}">
-      <div id="terminal" ng-init="runTerminal(targetMachineID, targetMachineHost)"></div>
+    <body ng-controller="terminalController">
+      <!-- Duct tape to have a variable form backend -->
+      <input id="targetMachineID" type="text" th:value="${machineID}" style="visibility:hidden"/>
+      <input id="targetMachineHost" type="text" th:value="${machineHost}" style="visibility:hidden"/>
+      <!-- -->
+      <div id="terminal" ng-init="runTerminal()"></div>
 
     </body>
   </html>
