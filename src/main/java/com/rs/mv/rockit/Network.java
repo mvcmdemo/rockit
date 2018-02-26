@@ -16,12 +16,12 @@ public class Network {
         final int winRDPPort = 3389;
         final int nixSSHPort = 22;
         if (isRemotePortOpen(host, winRDPPort, connectTimeout)) {
-            return MachinePlatforms.WINDOWS;
+            return MachinePlatforms.Windows;
         }
         if (isRemotePortOpen(host, nixSSHPort, connectTimeout)) {
-            return MachinePlatforms.UNIX_LINUX;
+            return MachinePlatforms.Unix;
         }
-        return MachinePlatforms.UNKNOWN;
+        return MachinePlatforms.Windows;
     }
 
     public boolean isRemotePortOpen(String host, int port, int timeout) {

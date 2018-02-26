@@ -1,7 +1,7 @@
-app.controller('MachineEditorController', function ($scope, $uibModalInstance, $timeout, machine, machines, OSs, groups, utils) {
+app.controller('MachineEditorController', function ($scope, $uibModalInstance, $timeout, machine, machines, platforms, groups, utils) {
     $scope.machine = angular.copy(machine);
     $scope.machines = angular.copy(machines);
-    $scope.OSs = angular.copy(OSs);
+    $scope.platforms = angular.copy(platforms);
     $scope.groups = angular.copy(groups);
 
     $scope.toggleGroup = function(group) {

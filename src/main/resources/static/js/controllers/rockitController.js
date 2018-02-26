@@ -13,7 +13,7 @@ app.controller('rockitController', ['$scope', '$q', '$log', '$window', '$timeout
 
         editableOptions.theme = 'bs3';
 
-        $scope.OSs = ['Windows', 'Unix'];
+        $scope.platforms = ['Windows', 'Unix'];
 
         $scope.groups = [];
         $scope.machines = [];
@@ -50,7 +50,7 @@ app.controller('rockitController', ['$scope', '$q', '$log', '$window', '$timeout
                 host: '',
                 user: '',
                 password: '',
-                os: '',
+                platform: 'Windows',
                 description: '',
                 groups: []
             };
@@ -72,8 +72,8 @@ app.controller('rockitController', ['$scope', '$q', '$log', '$window', '$timeout
                     machines : function () {
                         return $scope.machines;
                     },
-                    OSs : function () {
-                        return $scope.OSs;
+                    platforms : function () {
+                        return $scope.platforms;
                     },
                     groups : function () {
                         return $scope.groups;

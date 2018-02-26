@@ -17,7 +17,8 @@ public class Machine {
     private String description;
     private Set<Group> groups = new HashSet<>();
     private volatile MachineStates state = MachineStates.OFFLINE;
-    private volatile MachinePlatforms platform = MachinePlatforms.UNKNOWN;
+    private MachinePlatforms platform = MachinePlatforms.Windows;
+    private User usedBy;
 
     @Id
     @Column(name="MACHINE_ID")
@@ -96,12 +97,23 @@ public class Machine {
         this.state = state;
     }
 
-    @Transient
+    @Column(name="PLATFORM")
     public MachinePlatforms getPlatform() {
         return platform;
     }
 
     public void setPlatform(MachinePlatforms platform) {
         this.platform = platform;
+    }
+
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "USERS", joinColumns = { @JoinColumn(name = "USEDBY", nullable = true, updatable = false) },
+            inverseJoinColumns = { @JoinColumn(name = "USER_ID", nullable = false, updatable = false) })
+    public User getUsedBy() {
+        return usedBy;
+    }
+
+    public void setUsedBy(User usedBy) {
+        this.usedBy = usedBy;
     }
 }

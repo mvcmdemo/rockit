@@ -42,15 +42,15 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="os" class="col-3 col-form-label">OS</label>
+                        <label for="platform" class="col-3 col-form-label">Platform</label>
                         <div class="col-8">
-                            <select class="form-control" id="os" aria-describedby="osHelp" placeholder="Choose operation system" ng-model="machine.os">
-                                <option ng-repeat="os in OSs">{{os}}</option>
+                            <select class="form-control" id="platform" aria-describedby="platformHelp" placeholder="Choose operation system" ng-model="machine.platform">
+                                <option ng-repeat="platform in platforms">{{platform}}</option>
                             </select>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="os" class="col-3 col-form-label">Description</label>
+                        <label for="description" class="col-3 col-form-label">Description</label>
                         <div class="col-8">
                             <textarea class="form-control" id="description" aria-describedby="descriptionHelp" placeholder="Enter description" rows="3" ng-model="machine.description"></textarea>
                         </div>
