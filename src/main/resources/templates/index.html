@@ -71,12 +71,12 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr ng-repeat="machine in machines">
+                                <tr ng-repeat="machine in machines" ng-show="isMachineAvailForUser(machine)">
                                     <td><img ng-src="{{machine.state == 'ONLINE' ? '/img/green.png' : '/img/red.png'}}" style="width:16px;height:16px;" border="0"></td>
                                     <td>{{machine.name}}</td>
                                     <td>{{machine.host}}</td>
                                     <td>{{machine.platform}}</td>
-                                    <td><img ng-src="{{machine.usedBy == null ? '/img/green_square.png' : '/img/red_square.png'}}" style="width:16px;height:16px;" border="0">{{machine.usedBy == null ? '' : machine.usedBy}}</td>
+                                    <td><img ng-src="{{machine.usedBy !== null || machine.state !== 'ONLINE' ? '/img/red_square.png' : '/img/green_square.png'}}" style="width:16px;height:16px;" border="0">{{machine.usedBy == null ? '' : machine.usedBy}}</td>
                                     <td>{{machine.description}}</td>
                                     <td ng-show="user.role === 'admin'">
                                         <button type="button" class="btn btn-primary btn-sm" ng-click="editMachine(machine)"><i class="fa fa-edit" aria-hidden="true"></i></button>
@@ -112,7 +112,7 @@
                                 <tr ng-repeat="group in groups">
                                     <td>
                                         <div>
-                                            <a href="#" editable-text="group.name" e-required>{{ group.name || 'empty' }}</a>
+                                            <a href="#" editable-text="group.name" onsubmit="alert('submit!')" e-required >{{ group.name || 'empty' }}</a>
                                         </div>
                                     </td>
                                     <td>

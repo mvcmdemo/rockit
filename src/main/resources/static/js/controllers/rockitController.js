@@ -46,7 +46,7 @@ app.controller('rockitController', ['$scope', '$q', '$log', '$window', '$timeout
 
         $scope.getResources = function() {
             $scope.getAllMachines();
-
+            $scope.getAllGroups();
             $scope.startMachineMonitoring();
         };
 
@@ -75,6 +75,20 @@ app.controller('rockitController', ['$scope', '$q', '$log', '$window', '$timeout
                 });
             })
         }
+
+        $scope.isMachineAvailForUser = function(machine) {
+            if($scope.user.role === 'admin') {
+                return true;
+            }
+            var isValid = false;
+            $scope.user.groups.forEach(function (group) {
+                var idx = machine.groups.findIndex(utils.isEqual, group.id);
+                if (idx > -1) {
+                    isValid = true;
+                }
+            });
+            return isValid;
+        };
 
         $scope.getAllMachines = function() {
             $http.get('/machines').then(function(response){
@@ -163,6 +177,12 @@ app.controller('rockitController', ['$scope', '$q', '$log', '$window', '$timeout
                 return false;
             });
         }
+
+        $scope.getAllGroups = function() {
+            $http.get('/groups').then(function (response) {
+                $scope.groups = response.data.groups;
+            })
+        };
 
         $scope.addGroup = function () {
             var idx = $scope.groups.findIndex(utils.isEqualName, '');
