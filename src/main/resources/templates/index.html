@@ -71,14 +71,14 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr ng-repeat="machine in machines">
+                                <tr ng-repeat="machine in machines" ng-show="isMachineAvailForUser(machine)">
                                     <td><img ng-src="{{machine.state == 'ONLINE' ? '/img/green.png' : '/img/red.png'}}" style="width:16px;height:16px;" border="0"></td>
                                     <td>{{machine.name}}</td>
                                     <td>{{machine.host}}</td>
                                     <td>{{machine.platform}}</td>
-                                    <td>Usage</td>
+                                    <td><img ng-src="{{machine.usedBy !== null || machine.state !== 'ONLINE' ? '/img/red_square.png' : '/img/green_square.png'}}" style="width:16px;height:16px;" border="0">{{machine.usedBy == null ? '' : machine.usedBy}}</td>
                                     <td>{{machine.description}}</td>
-                                    <td>
+                                    <td ng-show="user.role === 'admin'">
                                         <button type="button" class="btn btn-primary btn-sm" ng-click="editMachine(machine)"><i class="fa fa-edit" aria-hidden="true"></i></button>
                                         <button type="button" class="btn btn-danger btn-sm" ng-click="deleteMachine(machine)"><i class="fa fa-close" aria-hidden="true"></i></button>
 
@@ -90,13 +90,14 @@
                                 </tr>
                                 </tbody>
                             </table>
-                            <div class="pull-right">
+                            <div class="pull-right" ng-show="user.role === 'admin'">
                                 <button type="button" class="btn btn-secondary" ng-click="addMachine()">Add Machine</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <!-- Groups -->
             <div class="card" ng-show="user.role === 'admin'">
                 <div class="card-header" role="tab" id="headingGroups">
                     <h5 class="mb-0">
@@ -111,7 +112,7 @@
                                 <tr ng-repeat="group in groups">
                                     <td>
                                         <div>
-                                            <a href="#" editable-text="group.name" e-required>{{ group.name || 'empty' }}</a>
+                                            <a href="#" editable-text="group.name" onsubmit="alert('submit!')" e-required >{{ group.name || 'empty' }}</a>
                                         </div>
                                     </td>
                                     <td>
@@ -128,6 +129,7 @@
                     </div>
                 </div>
             </div>
+            <!-- Users -->
             <div class="card" ng-show="user.role === 'admin'">
                 <div class="card-header" role="tab" id="headingUsers">
                     <h5 class="mb-0">
@@ -137,7 +139,37 @@
                 <div id="collapseUsers" class="collapse" role="tabpanel" aria-labelledby="headingUsers">
                     <div class="card-block">
                         <!-- Users -->
-                        <!--<h2 id="users" href="#users">Users</h2>-->
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Username</th>
+                                        <th>Role</th>
+                                        <th>Groups</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tr ng-repeat="user in users">
+                                    <td>
+                                        <div>{{user.username}}</div>
+                                    </td>
+                                    <td>
+                                        <div>{{user.role}}</div>
+                                    </td>
+                                    <td>
+                                        <div>{{user.groups}}</div>
+                                    </td>
+                                    <td>
+                                        <div class="pull-right">
+                                            <button type="button" class="btn btn-danger btn-sm"><i class="fa fa-close" aria-hidden="true"></i></button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="pull-right">
+                            <button type="button" class="btn btn-secondary" ng-click="addUser()" style="margin-bottom: 20px">Add User</button>
+                        </div>
                     </div>
                 </div>
             </div>

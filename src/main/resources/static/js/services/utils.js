@@ -1,10 +1,10 @@
 app.service('utils', [function(){
     return {
         isEqual: function(element) {
-            return element.id === this.normalize();
+            return element.id.toString() === this.toString();
         },
         isEqualName: function(element) {
-            return element.name === this.normalize();
+            return element.name.toString() === this.toString();
         },
         IDgenerator: function () {
             return Math.round(Math.random()*10000000000);

@@ -46,6 +46,48 @@ app.controller('rockitController', ['$scope', '$q', '$log', '$window', '$timeout
 
         $scope.getResources = function() {
             $scope.getAllMachines();
+            $scope.getAllGroups();
+            $scope.startMachineMonitoring();
+        };
+
+        var monitor_promise;
+        // starts the interval
+        $scope.startMachineMonitoring = function () {
+            // stops any running interval to avoid two intervals running at the same time
+            if (angular.isDefined(monitor_promise)) {
+                $scope.stopMachineMonitoring();
+            }
+            // store the interval monitor_promise
+            monitor_promise = $interval(updateMachineStatus, 1000);
+        };
+
+        // stops the interval
+        $scope.stopMachineMonitoring = function () {
+            $interval.cancel(monitor_promise);
+            monitor_promise = undefined;
+        };
+
+        function updateMachineStatus() {
+            $http.get('/machine_states').then(function (response) {
+                $scope.machines.forEach(function (machine) {
+                    machine.state = response.data.states[machine.id];
+                    machine.usedBy = response.data.machine_users[machine.id];
+                });
+            })
+        }
+
+        $scope.isMachineAvailForUser = function(machine) {
+            if($scope.user.role === 'admin') {
+                return true;
+            }
+            var isValid = false;
+            $scope.user.groups.forEach(function (group) {
+                var idx = machine.groups.findIndex(utils.isEqual, group.id);
+                if (idx > -1) {
+                    isValid = true;
+                }
+            });
+            return isValid;
         };
 
         $scope.getAllMachines = function() {
@@ -128,14 +170,19 @@ app.controller('rockitController', ['$scope', '$q', '$log', '$window', '$timeout
                     // edit an existing machine
                     var idx = $scope.machines.findIndex(utils.isEqual, id);
                     if(idx > -1) {
-                        $scope.machines.splice(idx, 1);
-                        $scope.machines.push(returnMachine);
+                        $scope.machines.splice(idx, 1, returnMachine);
                     }
                 }
             }, function () {
                 return false;
             });
         }
+
+        $scope.getAllGroups = function() {
+            $http.get('/groups').then(function (response) {
+                $scope.groups = response.data.groups;
+            })
+        };
 
         $scope.addGroup = function () {
             var idx = $scope.groups.findIndex(utils.isEqualName, '');
