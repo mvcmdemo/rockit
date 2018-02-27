@@ -124,7 +124,7 @@
                                     </td>
                                     <td>
                                         <div class="pull-right">
-                                            <button type="button" class="btn btn-danger btn-sm" ng-click="deleteGroup(group.id)"><i class="fa fa-close" aria-hidden="true"></i></button>
+                                            <button type="button" class="btn btn-danger btn-sm" ng-click="group.name == '' ? groups.splice($index,1) : deleteGroup(group.id)"><i class="fa fa-close" aria-hidden="true"></i></button>
                                         </div>
                                     </td>
                                 </tr>
@@ -166,7 +166,7 @@
                                         <div>{{user.login}}</div>
                                     </td>
                                     <td>
-                                        <div>{{user.role ? 'admin' : 'user'}}</div>
+                                        <div>{{user.admin ? 'admin' : 'user'}}</div>
                                     </td>
                                     <td>
                                         <div>{{user.email}}</div>

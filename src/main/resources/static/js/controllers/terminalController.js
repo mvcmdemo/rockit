@@ -23,11 +23,11 @@ app.controller('terminalController', function ($scope) {
 
         window.addEventListener('resize', function () {
             term.fit();
-            socket.emit('geometry', {cols : term.cols, rows : term.rows})
+            socket.emit('geometry', {cols : term.cols - 1, rows : term.rows - 1})
         }, false);
 
         socket.on('connect', function () {
-            socket.emit('geometry', {cols : term.cols, rows : term.rows})
+            socket.emit('geometry', {cols : term.cols -1 , rows : term.rows - 1})
         })
 
         term.on('data', function (data) {

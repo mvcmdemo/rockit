@@ -156,6 +156,7 @@ app.controller('rockitController', ['$scope', '$q', '$log', '$window', '$timeout
                     function () {
                         if (isNew) {
                             $scope.machines.push(returnMachine);
+                            $scope.getAllMachines();
                         } else {
                             var idx = $scope.machines.findIndex(utils.isEqual, id);
                             if(idx > -1) {
@@ -203,7 +204,10 @@ app.controller('rockitController', ['$scope', '$q', '$log', '$window', '$timeout
             // if it's not the same group
             if (idx !== index) {
                 var group = {id: 0, name: groupName};
-                $http.post('/groups', group);
+                $http.post('/groups', group).then(function () {
+                    $scope.getAllGroups();
+                });
+
             }
         };
 
@@ -267,6 +271,7 @@ app.controller('rockitController', ['$scope', '$q', '$log', '$window', '$timeout
                     function () {
                         if (isNew) {
                             $scope.users.push(returnUser);
+                            $scope.getAllUsers();
                         } else {
                             var idx = $scope.users.findIndex(utils.isEqual, id);
                             if(idx > -1) {
@@ -283,7 +288,6 @@ app.controller('rockitController', ['$scope', '$q', '$log', '$window', '$timeout
         }
 
         $scope.sendMessage = function(_user) {
-            var id = _user.id;
             var modalInstance = $uibModal.open({
                 backdrop : false,
                 animation : $scope.animationsEnabled,
