@@ -113,4 +113,29 @@ public class MachineService {
         }
         return users;
     }
+
+    public void grab(long machineId) throws Exception {
+        User currentUser = new User(); // TODO : Get current user
+        Machine machine = getById(machineId);
+        User usedBy = machine.getUsedBy();
+        if (usedBy != null && usedBy.getId() != currentUser.getId()) {
+            throw new Exception("Machine is already used");
+        }
+        machine.setUsedBy(currentUser);
+        machineDAO.save(machine);
+    }
+
+    public void release(long machineId) throws Exception {
+        User currentUser = new User(); // TODO : Get current user
+        Machine machine = getById(machineId);
+        User usedBy = machine.getUsedBy();
+        if (usedBy == null) {
+            throw new Exception("Machine is not used");
+        }
+        if (usedBy.getId() != currentUser.getId()) {
+            throw new Exception("You are not using this machine");
+        }
+        machine.setUsedBy(null);
+        machineDAO.save(machine);
+    }
 }

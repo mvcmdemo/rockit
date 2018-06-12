@@ -61,6 +61,11 @@ public class MainController {
         return "terminal";
     }
 
+    @RequestMapping("/filetree/{id}")
+    public String fileTree(Model model, @PathVariable long id) throws Exception {
+        return "filetree";
+    }
+
     @RequestMapping(value = "/machines", method = {RequestMethod.GET, RequestMethod.HEAD})
     public ResponseEntity<ModelMap> getMachines() {
         ModelMap resp = new ModelMap();
@@ -119,6 +124,38 @@ public class MainController {
             resp.put("status", "ok");
             response = ResponseEntity.ok(resp);
         } catch (DAOException daoe) {
+            resp.put("status", "error");
+            resp.put("error", daoe.getMessage());
+            response = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(resp);
+        }
+        return response;
+    }
+
+    @RequestMapping(value = "/machines/grab/{id}", method = {RequestMethod.POST, RequestMethod.PUT})
+    public ResponseEntity<ModelMap> grabMachine(@PathVariable("id") long id) {
+        ModelMap resp = new ModelMap();
+        ResponseEntity<ModelMap> response;
+        try {
+            machineService.grab(id);
+            resp.put("status", "ok");
+            response = ResponseEntity.ok(resp);
+        } catch (Exception daoe) {
+            resp.put("status", "error");
+            resp.put("error", daoe.getMessage());
+            response = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(resp);
+        }
+        return response;
+    }
+
+    @RequestMapping(value = "/machines/release/{id}", method = {RequestMethod.POST, RequestMethod.PUT})
+    public ResponseEntity<ModelMap> releaseMachine(@PathVariable("id") long id) {
+        ModelMap resp = new ModelMap();
+        ResponseEntity<ModelMap> response;
+        try {
+            machineService.release(id);
+            resp.put("status", "ok");
+            response = ResponseEntity.ok(resp);
+        } catch (Exception daoe) {
             resp.put("status", "error");
             resp.put("error", daoe.getMessage());
             response = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(resp);
