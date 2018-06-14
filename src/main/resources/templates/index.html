@@ -61,17 +61,53 @@
                             <table class="table table-striped" id="machineTable">
                                 <thead>
                                     <tr>
-                                        <th ng-click="sortTable('machineTable', 0)" style="cursor: pointer">State</th>
-                                        <th ng-click="sortTable('machineTable', 1)" style="cursor: pointer">Name</th>
-                                        <th ng-click="sortTable('machineTable', 2)" style="cursor: pointer">Hostname</th>
-                                        <th ng-click="sortTable('machineTable', 3)" style="cursor: pointer">Platform</th>
-                                        <th ng-click="sortTable('machineTable', 4)" style="cursor: pointer">Status</th>
-                                        <th ng-click="sortTable('machineTable', 5)" style="cursor: pointer">Description</th>
+                                        <th>
+                                            <a href="#" ng-click="machineSortType = 'state'; machineSortReverse = !machineSortReverse">
+                                                <span>State</span>
+                                                <span ng-show="machineSortType == 'state' && machineSortReverse" class="fa fa-caret-down"></span>
+                                                <span ng-show="machineSortType == 'state' && !machineSortReverse" class="fa fa-caret-up"></span>
+                                            </a>
+                                        </th>
+                                        <th>
+                                            <a href="#" ng-click="machineSortType = 'name'; machineSortReverse = !machineSortReverse">
+                                                <span>Name</span>
+                                                <span ng-show="machineSortType == 'name' && machineSortReverse" class="fa fa-caret-down"></span>
+                                                <span ng-show="machineSortType == 'name' && !machineSortReverse" class="fa fa-caret-up"></span>
+                                            </a>
+                                        </th>
+                                        <th>
+                                            <a href="#" ng-click="machineSortType = 'host'; machineSortReverse = !machineSortReverse">
+                                                <span>Hostname</span>
+                                                <span ng-show="machineSortType == 'host' && machineSortReverse" class="fa fa-caret-down"></span>
+                                                <span ng-show="machineSortType == 'host' && !machineSortReverse" class="fa fa-caret-up"></span>
+                                            </a>
+                                        </th>
+                                        <th>
+                                            <a href="#" ng-click="machineSortType = 'platform'; machineSortReverse = !machineSortReverse">
+                                                <span>Platform</span>
+                                                <span ng-show="machineSortType == 'platform' && machineSortReverse" class="fa fa-caret-down"></span>
+                                                <span ng-show="machineSortType == 'platform' && !machineSortReverse" class="fa fa-caret-up"></span>
+                                            </a>
+                                        </th>
+                                        <th>
+                                            <a href="#" ng-click="machineSortType = 'usedBy.name'; machineSortReverse = !machineSortReverse">
+                                                <span>Status</span>
+                                                <span ng-show="machineSortType == 'usedBy.name' && machineSortReverse" class="fa fa-caret-down"></span>
+                                                <span ng-show="machineSortType == 'usedBy.name' && !machineSortReverse" class="fa fa-caret-up"></span>
+                                            </a>
+                                        </th>
+                                        <th>
+                                            <a href="#" ng-click="machineSortType = 'description'; machineSortReverse = !machineSortReverse">
+                                                <span>Description</span>
+                                                <span ng-show="machineSortType == 'description' && machineSortReverse" class="fa fa-caret-down"></span>
+                                                <span ng-show="machineSortType == 'description' && !machineSortReverse" class="fa fa-caret-up"></span>
+                                            </a>
+                                        </th>
                                         <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr ng-repeat="machine in machines" ng-show="isMachineAvailForUser(machine)">
+                                    <tr ng-repeat="machine in machines | orderBy:machineSortType:machineSortReverse" ng-show="isMachineAvailForUser(machine)">
                                         <td><img ng-src="{{machine.state == 'ONLINE' ? '/img/green.png' : '/img/red.png'}}" style="width:16px;height:16px;" border="0"></td>
                                         <td>{{machine.name}}</td>
                                         <td>{{machine.host}}</td>
@@ -92,7 +128,7 @@
 
                                         </td>
                                         <td>
-                                            <button type="button" class="btn btn-primary" ng-click="connectMachine(machine)">Connect</button>
+                                            <button type="button" class="btn btn-primary btn-sm" ng-click="connectMachine(machine)">Connect</button>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -150,15 +186,45 @@
                             <table class="table table-striped" id="userTable">
                                 <thead>
                                     <tr>
-                                        <th ng-click="sortTable('userTable', 0)" style="cursor: pointer">Username</th>
-                                        <th ng-click="sortTable('userTable', 1)" style="cursor: pointer">Login</th>
-                                        <th ng-click="sortTable('userTable', 2)" style="cursor: pointer">Role</th>
-                                        <th ng-click="sortTable('userTable', 3)" style="cursor: pointer">Email</th>
-                                        <th ng-click="sortTable('userTable', 4)" style="cursor: pointer">Groups</th>
+                                        <th>
+                                            <a href="#" ng-click="userSortType = 'name'; userSortReverse = !userSortReverse">
+                                                <span>Username</span>
+                                                <span ng-show="userSortType == 'name' && userSortReverse" class="fa fa-caret-down"></span>
+                                                <span ng-show="userSortType == 'name' && !userSortReverse" class="fa fa-caret-up"></span>
+                                            </a>
+                                        </th>
+                                        <th>
+                                            <a href="#" ng-click="userSortType = 'login'; userSortReverse = !userSortReverse">
+                                                <span>Login</span>
+                                                <span ng-show="userSortType == 'login' && userSortReverse" class="fa fa-caret-down"></span>
+                                                <span ng-show="userSortType == 'login' && !userSortReverse" class="fa fa-caret-up"></span>
+                                            </a>
+                                        </th>
+                                        <th>
+                                            <a href="#" ng-click="userSortType = 'admin'; userSortReverse = !userSortReverse">
+                                                <span>Role</span>
+                                                <span ng-show="userSortType == 'admin' && userSortReverse" class="fa fa-caret-down"></span>
+                                                <span ng-show="userSortType == 'admin' && !userSortReverse" class="fa fa-caret-up"></span>
+                                            </a>
+                                        </th>
+                                        <th>
+                                            <a href="#" ng-click="userSortType = 'email'; userSortReverse = !userSortReverse">
+                                                <span>Email</span>
+                                                <span ng-show="userSortType == 'email' && userSortReverse" class="fa fa-caret-down"></span>
+                                                <span ng-show="userSortType == 'email' && !userSortReverse" class="fa fa-caret-up"></span>
+                                            </a>
+                                        </th>
+                                        <th>
+                                            <a href="#" ng-click="userSortType = 'groups'; userSortReverse = !userSortReverse">
+                                                <span>Groups</span>
+                                                <span ng-show="userSortType == 'groups' && userSortReverse" class="fa fa-caret-down"></span>
+                                                <span ng-show="userSortType == 'groups' && !userSortReverse" class="fa fa-caret-up"></span>
+                                            </a>
+                                        </th>
                                         <th></th>
                                     </tr>
                                 </thead>
-                                <tr ng-repeat="user in users">
+                                <tr ng-repeat="user in users | orderBy:userSortType:userSortReverse">
                                     <td>
                                         <div>{{user.name}}</div>
                                     </td>
