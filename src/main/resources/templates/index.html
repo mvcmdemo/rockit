@@ -56,6 +56,10 @@
                 <div id="collapseMachines" class="collapse show" role="tabpanel" aria-labelledby="headingMachines">
                     <div class="card-block">
 
+                        <div class="col-xs-8" style="margin : 5px">
+                            <span>Filter: </span>
+                            <input class="text" ng-model="machineFilter">
+                        </div>
                         <!--<h2 id="machines" href="#machines">Machines</h2>-->
                         <div class="table-responsive">
                             <table class="table table-striped" id="machineTable">
@@ -107,7 +111,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr ng-repeat="machine in machines | orderBy:machineSortType:machineSortReverse" ng-show="isMachineAvailForUser(machine)">
+                                    <tr ng-repeat="machine in machines | orderBy:machineSortType:machineSortReverse | filter:machineFilter" ng-show="isMachineAvailForUser(machine)">
                                         <td><img ng-src="{{machine.state == 'ONLINE' ? '/img/green.png' : '/img/red.png'}}" style="width:16px;height:16px;" border="0"></td>
                                         <td>{{machine.name}}</td>
                                         <td>{{machine.host}}</td>
@@ -182,6 +186,11 @@
                 <div id="collapseUsers" class="collapse" role="tabpanel" aria-labelledby="headingUsers">
                     <div class="card-block">
                         <!-- Users -->
+                        <div class="col-xs-8" style="margin : 5px">
+                            <span>Filter: </span>
+                            <input class="text" ng-model="userFilter">
+                        </div>
+
                         <div class="table-responsive">
                             <table class="table table-striped" id="userTable">
                                 <thead>
@@ -224,7 +233,7 @@
                                         <th></th>
                                     </tr>
                                 </thead>
-                                <tr ng-repeat="user in users | orderBy:userSortType:userSortReverse">
+                                <tr ng-repeat="user in users | orderBy:userSortType:userSortReverse | filter:userFilter">
                                     <td>
                                         <div>{{user.name}}</div>
                                     </td>

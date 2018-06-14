@@ -16,9 +16,11 @@ app.controller('rockitController', ['$scope', '$q', '$log', '$window', '$timeout
 
         $scope.machineSortType = "state";
         $scope.machineSortReverse = "false";
+        $scope.machineFilter = "";
 
         $scope.userSortType = "name";
         $scope.userSortReverse = "false";
+        $scope.userFilter = "";
 
         $scope.users = [];
 
