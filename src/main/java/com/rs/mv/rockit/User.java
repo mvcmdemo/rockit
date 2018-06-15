@@ -2,20 +2,22 @@ package com.rs.mv.rockit;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name="USERS")
-public class User {
+public class User implements UserDetails, GrantedAuthority {
     private long id;
-    private String login;
+    private String username;
     private String password;
-    private String name;
+    private String fullName;
     private String email;
     private boolean isAdmin;
+    private boolean enabled;
     @JsonIgnoreProperties({"machines", "users"})
     private Set<Group> groups = new HashSet<>();
     @JsonIgnoreProperties({"groups", "usedBy"})
@@ -33,13 +35,14 @@ public class User {
         this.id = id;
     }
 
-    @Column(name="LOGIN")
-    public String getLogin() {
-        return login;
+    @Column(name="USER_NAME")
+    @Override
+    public String getUsername() {
+        return username;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     @Column(name="PASSWORD")
@@ -51,13 +54,13 @@ public class User {
         this.password = password;
     }
 
-    @Column(name="NAME")
-    public String getName() {
-        return name;
+    @Column(name="FULL_NAME")
+    public String getFullName() {
+        return fullName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     @Column(name="EMAIL")
@@ -96,5 +99,47 @@ public class User {
 
     public void setAdmin(boolean admin) {
         isAdmin = admin;
+    }
+
+    @Column(name="ENABLED")
+    @Override
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    @Override
+    @Transient
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(this);
+        return authorities;
+    }
+
+    @Override
+    @Transient
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    @Transient
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    @Transient
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    @Transient
+    public String getAuthority() {
+        return getUsername();
     }
 }

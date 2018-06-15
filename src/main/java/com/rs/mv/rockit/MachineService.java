@@ -3,6 +3,9 @@ package com.rs.mv.rockit;
 import com.rs.mv.rockit.dao.MachineDAO;
 import com.rs.mv.rockit.exception.DAOException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -115,7 +118,10 @@ public class MachineService {
     }
 
     public void grab(long machineId) throws Exception {
-        User currentUser = new User(); // TODO : Get current user
+        User currentUser = getCurrentUser();
+        if (currentUser == null) {
+            throw new Exception("Unable to get current user");
+        }
         Machine machine = getById(machineId);
         User usedBy = machine.getUsedBy();
         if (usedBy != null && usedBy.getId() != currentUser.getId()) {
@@ -126,7 +132,10 @@ public class MachineService {
     }
 
     public void release(long machineId) throws Exception {
-        User currentUser = new User(); // TODO : Get current user
+        User currentUser = getCurrentUser();
+        if (currentUser == null) {
+            throw new Exception("Unable to get current user");
+        }
         Machine machine = getById(machineId);
         User usedBy = machine.getUsedBy();
         if (usedBy == null) {
@@ -137,5 +146,16 @@ public class MachineService {
         }
         machine.setUsedBy(null);
         machineDAO.save(machine);
+    }
+
+    private User getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication.getAuthorities().size() > 0) {
+            GrantedAuthority authority = authentication.getAuthorities().iterator().next();
+            if (authority instanceof User) {
+                return (User)authority;
+            }
+        }
+        return null;
     }
 }

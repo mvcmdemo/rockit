@@ -49,6 +49,11 @@ public class MainController {
         return "index";
     }
 
+    @RequestMapping("/login")
+    public String login(Model model) {
+        return "login";
+    }
+
     @RequestMapping("/terminal/{id}")
     public String terminal(Model model, @PathVariable long id) throws Exception {
         Machine machine = machineService.getById(id);
