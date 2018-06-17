@@ -10,12 +10,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.security.Principal;
 import java.time.LocalDateTime;
 
 @Controller
@@ -47,11 +45,6 @@ public class MainController {
     @RequestMapping("/")
     public String index(Model model) {
         return "index";
-    }
-
-    @RequestMapping("/login")
-    public String login(Model model) {
-        return "login";
     }
 
     @RequestMapping("/terminal/{id}")

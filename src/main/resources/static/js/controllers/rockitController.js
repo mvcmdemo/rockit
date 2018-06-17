@@ -1,10 +1,9 @@
 app.controller('rockitController', ['$scope', '$q', '$log', '$window', '$timeout', '$http', '$interval', '$rootScope', '$uibModal', 'editableOptions', 'utils', 'dataService', '$window',
     function AdminController($scope, $q, $log, $window, $timeout, $http, $interval, $rootScope, $uibModal, editableOptions, utils, dataService, $window) {
 
-
         $(window).resize(function(){
-            $('#loginform').css('margin-left',($window.innerWidth - $('#loginform').innerWidth() - 200) + 'px');
-            $('#logoutform').css('margin-left',($window.innerWidth - $('#logoutform').innerWidth() - 250) + 'px');
+            $('#loginForm').css('margin-left',($window.innerWidth - $('#loginForm').innerWidth() - 200) + 'px');
+            $('#logoutForm').css('margin-left',($window.innerWidth - $('#logoutForm').innerWidth() - 250) + 'px');
         });
         $(window).resize();
 
@@ -24,31 +23,61 @@ app.controller('rockitController', ['$scope', '$q', '$log', '$window', '$timeout
 
         $scope.users = [];
 
-        $scope.user = {login: 'admin', password: 'admin', admin: true, groups: []};
+        $scope.user = {username: '', password: '', admin: false, groups: []};
+
+        $http.get('/user').then(
+            function (response) {
+                if (response != null && !angular.isUndefined(response.data.authorities) &&
+                    response.data.authorities !== null) {
+                    $scope.user = response.data.authorities[0];
+
+                    $scope.getResources();
+                }
+            },
+            function () {
+                $scope.user = {username: '', password: '', admin: false, groups: []};
+            });
 
         $scope.login = function() {
             var username = $('#usernameInput').val();
             var password = $('#passwordInput').val();
+            var headers = {
+                    authorization : "Basic "
+                    + btoa(unescape(encodeURIComponent(username + ":" + password)))
+                };
+            $http.get('/user', { headers : headers }).then(function (response) {
+                if (response != null && !angular.isUndefined(response.data.authorities) &&
+                    response.data.authorities !== null) {
+                    $scope.user = response.data.authorities[0];
 
-            var isFound = false;
-            $scope.users.forEach(function(element, index){
-                if (element.login === username && element.password === password){
-                    $scope.user = $scope.users[index];
-                    isFound = true;
+                    $scope.getResources();
+                }
+            },
+            function(response) {
+                if (response.data.errorMessage) {
+                    alert(response.data.errorMessage);
+                } else {
+                    alert("Unexpected error has occurred!");
                 }
             });
-            if (!isFound)
-                alert('Username or password is incorrect!');
         };
 
-        $scope.logout = function() {
-            $scope.user = '';
+        $scope.logout = function () {
+            $http.post('logout', {}).finally (function () {
+                $scope.user = {username: '', password: '', admin: false, groups: []};
+
+                stopGettingResources();
+            });
         };
 
         $scope.platforms = ['Windows', 'Unix'];
 
         $scope.groups = [];
         $scope.machines = [];
+
+        function stopGettingResources() {
+            $scope.stopMachineMonitoring();
+        }
 
         $scope.getResources = function() {
             $scope.getAllMachines();

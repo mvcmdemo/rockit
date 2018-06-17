@@ -12,6 +12,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.csrf.CsrfTokenRepository;
+import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
+import org.springframework.security.web.session.SessionManagementFilter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,26 +25,53 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserDAO userDAO;
 
+//    @Override
+//    protected void configure(HttpSecurity http) throws Exception {
+//        http.authorizeRequests()
+//            .antMatchers(
+//                    "/",
+//                    "/lib/**",
+//                    "/img/**",
+//                    "/css/**",
+//                    "/js/**",
+//                    "/fonts/**",
+//                    "/favicon.png"
+//            ).permitAll()
+//            .anyRequest().authenticated()
+//            .and()
+//            .formLogin()
+//            .defaultSuccessUrl("/")
+//            .loginProcessingUrl("/login")
+//            .loginPage("/index.html")
+//            .and()
+//            .logout()
+//            .permitAll();
+//    }
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
+        // @formatter:off
+        http
+            .httpBasic()
+            .authenticationEntryPoint(new HttpAuthenticationEntryPoint())
+            .and()
+            .authorizeRequests()
             .antMatchers(
                     "/",
-                    "/lib/**",
-                    "/img/**",
-                    "/css/**",
-                    "/js/**",
-                    "/fonts/**",
-                    "/favicon.png"
-            ).permitAll()
-            .anyRequest().authenticated()
-            .and()
-            .formLogin()
-            .loginPage("/login")
+                "/lib/**",
+                "/img/**",
+                "/css/**",
+                "/js/**",
+                "/fonts/**",
+                "/favicon.png",
+                "/healthcheck")
             .permitAll()
-            .and()
-            .logout()
-            .permitAll();
+            .anyRequest()
+            .authenticated();
+
+        http.logout().logoutUrl("/logout").logoutSuccessUrl("/").permitAll();
+        http.csrf().disable();
+        // @formatter:on
     }
 
     @Bean
@@ -56,5 +86,4 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         List<UserDetails> userDetails = new ArrayList<>(users);
         return new InMemoryUserDetailsManager(userDetails);
-    }
-}
+    }}

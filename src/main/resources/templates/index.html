@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="rockit">
+<html lang="en" ng-app="rockit" xmlns:th="http://www.w3.org/1999/xhtml">
 
     <head>
         <meta charset="utf-8">
@@ -14,7 +14,7 @@
         <title>ROCKIT</title>
     </head>
 
-    <body ng-controller="rockitController" ng-init="getResources()">
+    <body ng-controller="rockitController">
         <!-- Menu -->
         <div class="container">
             <nav class="navbar navbar-inverse bg-inverse fixed-top">
@@ -25,16 +25,16 @@
                         <span>ROCKIT</span>
                     </a>
                     </div>
-                    <div id="loginform" ng-show="user === ''">
-                        <form class="form-inline my-2 my-lg-0">
-                            <input id="usernameInput" class="form-control mr-sm-2" type="text" placeholder="Username">
-                            <input id="passwordInput" class="form-control mr-sm-2" type="password" placeholder="Password">
-                            <button class="btn btn-outline-success my-2 my-sm-0" type="submit" ng-click="login()">Sign in</button>
+                    <div id="loginForm" ng-show="user.username === ''">
+                        <form class="form-inline my-2 my-lg-0" ng-submit="login()">
+                            <input id="usernameInput" name="username" class="form-control mr-sm-2" type="text" placeholder="Username">
+                            <input id="passwordInput" name="password" class="form-control mr-sm-2" type="password" placeholder="Password">
+                            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Sign in</button>
                         </form>
                     </div>
-                    <div id="logoutform" ng-show="user !== ''">
+                    <div id="logoutForm" ng-show="user.username !== ''">
                         <form class="form-inline my-2 my-lg-0">
-                            <span type="text" ng-bind="user.login" style="color: white; margin-right: 10px; font-size: 1.5em"></span>
+                            <span type="text" ng-bind="user.username" style="color: white; margin-right: 10px; font-size: 1.5em"></span>
                             <button class="btn btn-outline-success my-2 my-sm-0" type="button" ng-click="logout()">Sign out</button>
                         </form>
                     </div>
@@ -44,7 +44,7 @@
 
         </div>
 
-        <div id="accordion" role="tablist" aria-multiselectable="true" ng-show="user !== ''">
+        <div id="accordion" role="tablist" aria-multiselectable="true" ng-show="user.username !== ''">
             <!-- Machines -->
             <div class="card">
                 <div class="card-header" role="tab" id="headingMachines">

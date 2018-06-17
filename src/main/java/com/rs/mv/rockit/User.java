@@ -1,5 +1,6 @@
 package com.rs.mv.rockit;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.security.core.GrantedAuthority;
@@ -113,6 +114,7 @@ public class User implements UserDetails, GrantedAuthority {
 
     @Override
     @Transient
+    @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(this);
@@ -139,6 +141,7 @@ public class User implements UserDetails, GrantedAuthority {
 
     @Override
     @Transient
+    @JsonIgnore
     public String getAuthority() {
         return getUsername();
     }
