@@ -126,13 +126,21 @@
                                         </td>
                                         <td>{{machine.description}}</td>
                                         <td ng-show="user.admin">
-                                            <button type="button" class="btn btn-primary btn-sm" ng-click="editMachine(machine)"><i class="fa fa-edit" aria-hidden="true"></i></button>
-                                            <button type="button" class="btn btn-danger btn-sm" ng-click="deleteMachine(machine)"><i class="fa fa-close" aria-hidden="true"></i></button>
+                                            <button type="button" class="btn btn-primary btn-xs" ng-click="editMachine(machine)"><i class="fa fa-edit" aria-hidden="true"></i></button>
+                                            <button type="button" class="btn btn-danger btn-xs" ng-click="deleteMachine(machine)"><i class="fa fa-close" aria-hidden="true"></i></button>
 
 
                                         </td>
                                         <td>
-                                            <button type="button" class="btn btn-primary btn-sm" ng-click="connectMachine(machine)">Connect</button>
+                                            <div class="pull-right">
+                                                <button type="button" class="btn btn-success btn-sm" ng-click="connectMachine(machine)"
+                                                        ng-show="machine.state == 'ONLINE' && (machine.usedBy == null || machine.usedBy == '')">Connect</button>
+                                                <button type="button" class="btn btn btn-sm"
+                                                        ng-show="machine.usedBy == null || machine.usedBy == ''"
+                                                        ng-click="grabMachine(machine)">Grab</button>
+                                                <button type="button" class="btn btn-primary btn-sm" ng-click="releaseMachine(machine)"
+                                                        ng-show="!(machine.usedBy == null || machine.usedBy == '')">Release</button>
+                                            </div>
                                         </td>
                                     </tr>
                                 </tbody>
