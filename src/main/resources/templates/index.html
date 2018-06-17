@@ -235,10 +235,10 @@
                                 </thead>
                                 <tr ng-repeat="user in users | orderBy:userSortType:userSortReverse | filter:userFilter">
                                     <td>
-                                        <div>{{user.name}}</div>
+                                        <div>{{user.fullName}}</div>
                                     </td>
                                     <td>
-                                        <div>{{user.login}}</div>
+                                        <div>{{user.username}}</div>
                                     </td>
                                     <td>
                                         <div>{{user.admin ? 'admin' : 'user'}}</div>

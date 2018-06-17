@@ -27,6 +27,7 @@ app.controller('UserEditorController', function ($scope, $uibModalInstance, $tim
         if (!validateUser()) {
             return;
         }
+        $scope.user.enabled = true;
         $uibModalInstance.close($scope.user);
     };
 
