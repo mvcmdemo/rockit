@@ -18,14 +18,17 @@ app.controller('rockitController', ['$scope', '$q', '$log', '$window', '$timeout
         $scope.users = [];
 
         $scope.user = {username: '', password: '', admin: false, groups: []};
+        
+        function authorize(user) {
+            $scope.user = user;
+            $scope.getResources();
+        }
 
         $http.get('/user').then(
             function (response) {
                 if (response != null && !angular.isUndefined(response.data.authorities) &&
                     response.data.authorities !== null) {
-                    $scope.user = response.data.authorities[0];
-
-                    $scope.getResources();
+                    authorize(response.data.authorities[0]);
                 }
             },
             function () {
@@ -42,9 +45,7 @@ app.controller('rockitController', ['$scope', '$q', '$log', '$window', '$timeout
             $http.get('/user', { headers : headers }).then(function (response) {
                 if (response != null && !angular.isUndefined(response.data.authorities) &&
                     response.data.authorities !== null) {
-                    $scope.user = response.data.authorities[0];
-
-                    $scope.getResources();
+                    authorize(response.data.authorities[0]);
                 }
             },
             function(response) {
@@ -135,6 +136,23 @@ app.controller('rockitController', ['$scope', '$q', '$log', '$window', '$timeout
             } else {
                 $window.open('/terminal/' + machine.id, '_blank');
             }
+            $scope.grabMachine(machine);
+        };
+
+        $scope.grabMachine = function(machine) {
+            $http.post("/machines/grab/" + machine.id).then(function(response) {
+
+            }, function(reason) {
+                alert("Failed to grab machine " + machine.name + ". " + reason.data.error);
+            });
+        };
+
+        $scope.releaseMachine = function(machine) {
+            $http.post("/machines/release/" + machine.id).then(function(response) {
+
+            }, function(reason) {
+                alert("Failed to release machine " + machine.name + ". " + reason.data.error);
+            });
         };
 
         $scope.editMachine = function(machine) {
