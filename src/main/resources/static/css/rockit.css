@@ -29,3 +29,36 @@ h2 {
 .modal{
     background: rgba(0,0,0,0.3);
 }
+
+.btn-add-smth {
+    margin-bottom: 20px;
+}
+
+.menu-user-name {
+    color: white;
+    margin-right: 10px;
+    font-size: 12pt;
+}
+
+.card-header {
+    cursor: pointer;
+}
+
+.status-img {
+    width:16px;
+    height:16px;
+    border: 0;
+}
+
+.text-filter {
+    margin : 5px;
+}
+
+.nav-bar-menu-rockit {
+    padding-left:20px;
+    padding-right:20px
+}
+
+.logout-form{
+    margin-top: 5px;
+}

@@ -18,24 +18,24 @@
         <!-- Menu -->
         <div class="container">
             <nav class="navbar navbar-inverse bg-inverse fixed-top">
-                <div class="navbar-inner row" style="padding-left:20px; padding-right:20px">
+                <div class="navbar-inner row nav-bar-menu-rockit">
                     <div class="pull-left">
-                    <a class="navbar-brand" href="#">
-                        <img src="/img/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
-                        <span>ROCKIT</span>
-                    </a>
+                        <a class="navbar-brand" href="#">
+                            <img src="/img/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
+                            <span>ROCKIT</span>
+                        </a>
                     </div>
                     <div id="loginForm" ng-show="user.username === ''">
                         <form class="form-inline my-2 my-lg-0" ng-submit="login()">
                             <input id="usernameInput" name="username" class="form-control mr-sm-2" type="text" placeholder="Username">
                             <input id="passwordInput" name="password" class="form-control mr-sm-2" type="password" placeholder="Password">
-                            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Sign in</button>
+                            <button class="btn btn-outline-success btn-sm my-2 my-sm-0" type="submit">Sign in</button>
                         </form>
                     </div>
-                    <div id="logoutForm" ng-show="user.username !== ''">
+                    <div id="logoutForm" ng-show="user.username !== ''" class="logout-form">
                         <form class="form-inline my-2 my-lg-0">
-                            <span type="text" ng-bind="user.username" style="color: white; margin-right: 10px; font-size: 1.5em"></span>
-                            <button class="btn btn-outline-success my-2 my-sm-0" type="button" ng-click="logout()">Sign out</button>
+                            <span type="text" class="menu-user-name" ng-bind="user.username"></span>
+                            <button class="btn btn-outline-success btn-sm my-2 my-sm-0" type="button" ng-click="logout()">Sign out</button>
                         </form>
                     </div>
                 </div>
@@ -49,14 +49,14 @@
             <div class="card">
                 <div class="card-header" role="tab" id="headingMachines">
                     <h5 class="mb-0">
-                        <h2 data-toggle="collapse" data-parent="#accordion" href="#collapseMachines" aria-expanded="true" aria-controls="collapseMachines" style="cursor: pointer;">Machines</h2>
+                        <h4 data-toggle="collapse" data-parent="#accordion" href="#collapseMachines" aria-expanded="true" aria-controls="collapseMachines">Machines</h4>
                     </h5>
                 </div>
 
                 <div id="collapseMachines" class="collapse show" role="tabpanel" aria-labelledby="headingMachines">
                     <div class="card-block">
 
-                        <div class="col-xs-8" style="margin : 5px">
+                        <div class="col-xs-8 text-filter">
                             <span>Filter: </span>
                             <input class="text" ng-model="machineFilter">
                         </div>
@@ -112,13 +112,13 @@
                                 </thead>
                                 <tbody>
                                     <tr ng-repeat="machine in machines | orderBy:machineSortType:machineSortReverse | filter:machineFilter" ng-show="isMachineAvailForUser(machine)">
-                                        <td><img ng-src="{{machine.state == 'ONLINE' ? '/img/green.png' : '/img/red.png'}}" style="width:16px;height:16px;" border="0"></td>
+                                        <td><img ng-src="{{machine.state == 'ONLINE' ? '/img/green.png' : '/img/red.png'}}" class="status-img"></td>
                                         <td>{{machine.name}}</td>
                                         <td>{{machine.host}}</td>
                                         <td>{{machine.platform}}</td>
                                         <td>
                                             <div>
-                                                <img ng-src="{{machine.usedBy !== null || machine.state !== 'ONLINE' ? '/img/red_square.png' : '/img/green_square.png'}}" style="width:16px;height:16px;" border="0">
+                                                <img ng-src="{{machine.usedBy !== null || machine.state !== 'ONLINE' ? '/img/red_square.png' : '/img/green_square.png'}}" class="status-img">
                                                 <span style="margin-left:10px;">{{machine.usedBy == null ? '' : machine.usedBy.name}}</span>
                                                 <button type="button" class="btn btn-secondary btn-sm" ng-show="machine.usedBy != null" ng-click="sendMessage(machine.usedBy)"><i class="fa fa-envelope" aria-hidden="true"></i></button>
                                             </div>
@@ -146,7 +146,7 @@
                                 </tbody>
                             </table>
                             <div class="pull-right" ng-show="user.admin">
-                                <button type="button" class="btn btn-secondary" ng-click="addMachine()">Add Machine</button>
+                                <button type="button" class="btn btn-secondary btn-sm btn-add-smth" ng-click="addMachine()">Add Machine</button>
                             </div>
                         </div>
                     </div>
@@ -156,7 +156,7 @@
             <div class="card" ng-show="user.admin">
                 <div class="card-header" role="tab" id="headingGroups">
                     <h5 class="mb-0">
-                        <h2 class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseGroups" aria-expanded="false" aria-controls="collapseGroups" style="cursor: pointer;">Groups</h2>
+                        <h4 class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseGroups" aria-expanded="false" aria-controls="collapseGroups">Groups</h4>
                     </h5>
                 </div>
                 <div id="collapseGroups" class="collapse" role="tabpanel" aria-labelledby="headingGroups">
@@ -172,14 +172,14 @@
                                     </td>
                                     <td>
                                         <div class="pull-right">
-                                            <button type="button" class="btn btn-danger btn-sm" ng-click="group.name == '' ? groups.splice($index,1) : deleteGroup(group.id)"><i class="fa fa-close" aria-hidden="true"></i></button>
+                                            <button type="button" class="btn btn-danger btn-xs" ng-click="group.name == '' ? groups.splice($index,1) : deleteGroup(group.id)"><i class="fa fa-close" aria-hidden="true"></i></button>
                                         </div>
                                     </td>
                                 </tr>
                             </table>
                         </div>
                         <div class="pull-right">
-                            <button type="button" class="btn btn-secondary" ng-click="addGroup()" style="margin-bottom: 20px">Add Group</button>
+                            <button type="button" class="btn btn-secondary btn-sm btn-add-smth" ng-click="addGroup()">Add Group</button>
                         </div>
                     </div>
                 </div>
@@ -188,13 +188,13 @@
             <div class="card" ng-show="user.admin">
                 <div class="card-header" role="tab" id="headingUsers">
                     <h5 class="mb-0">
-                        <h2 class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseUsers" aria-expanded="false" aria-controls="collapseUsers" style="cursor: pointer;">Users</h2>
+                        <h4 class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseUsers" aria-expanded="false" aria-controls="collapseUsers">Users</h4>
                     </h5>
                 </div>
                 <div id="collapseUsers" class="collapse" role="tabpanel" aria-labelledby="headingUsers">
                     <div class="card-block">
                         <!-- Users -->
-                        <div class="col-xs-8" style="margin : 5px">
+                        <div class="col-xs-8 text-filter" >
                             <span>Filter: </span>
                             <input class="text" ng-model="userFilter">
                         </div>
@@ -259,15 +259,15 @@
                                     </td>
                                     <td>
                                         <div class="pull-right">
-                                            <button type="button" class="btn btn-primary btn-sm" ng-click="editUser(user)"><i class="fa fa-edit" aria-hidden="true"></i></button>
-                                            <button type="button" class="btn btn-danger btn-sm"><i class="fa fa-close" aria-hidden="true"></i></button>
+                                            <button type="button" class="btn btn-primary btn-xs" ng-click="editUser(user)"><i class="fa fa-edit" aria-hidden="true"></i></button>
+                                            <button type="button" class="btn btn-danger btn-xs"><i class="fa fa-close" aria-hidden="true"></i></button>
                                         </div>
                                     </td>
                                 </tr>
                             </table>
                         </div>
                         <div class="pull-right">
-                            <button type="button" class="btn btn-secondary" ng-click="addUser()" style="margin-bottom: 20px">Add User</button>
+                            <button type="button" class="btn btn-secondary btn-sm btn-add-smth" ng-click="addUser()">Add User</button>
                         </div>
                     </div>
                 </div>
