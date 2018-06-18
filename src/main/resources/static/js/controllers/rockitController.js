@@ -276,7 +276,11 @@ app.controller('rockitController', ['$scope', '$q', '$log', '$window', '$timeout
         };
 
         $scope.editUser = function(user) {
-            openUserEditor(user, false);
+            if (user.username !== 'admin') {
+                openUserEditor(user, false);
+            } else {
+                alert("User 'admin' can't be removed");
+            }
         };
 
         $scope.addUser = function() {
@@ -335,6 +339,46 @@ app.controller('rockitController', ['$scope', '$q', '$log', '$window', '$timeout
                 return false;
             });
         }
+
+        $scope.deleteUser = function(user) {
+            if (user.username !== 'admin') {
+                BootstrapDialog.show({
+                    closeByBackdrop: false,
+                    message: "Are you sure you want to delete user: '" + user.username + "'?",
+                    title: "Delete User",
+                    type: BootstrapDialog.TYPE_WARNING,
+                    onshown: function (dialogRef) {
+                        dialogRef.getButton('yes').focus();
+                    },
+                    buttons: [
+                        {
+                            id: 'yes',
+                            label: 'Yes',
+                            cssClass: 'btn-warning',
+                            action:
+                                function (dialogRef) {
+
+                                    $http.delete('/users/' + user.id).then(function () {
+                                        var idx = $scope.users.findIndex(utils.isEqual, user.id);
+                                        $scope.users.splice(idx, 1);
+                                    }, function (reason) {
+                                        alert('Failed to remove user ' + user.username + '. ' + reason.data.error);
+                                    });
+
+                                    dialogRef.close();
+                                }
+                        }, {
+                            label: 'No',
+                            action:
+                                function (dialogRef) {
+                                    dialogRef.close();
+                                }
+                        }]
+                });
+            } else {
+                alert("User 'admin' can't be removed");
+            }
+        };
 
         $scope.sendMessage = function(_user) {
             var modalInstance = $uibModal.open({
