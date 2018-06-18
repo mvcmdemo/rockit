@@ -1,11 +1,5 @@
 app.controller('rockitController', ['$scope', '$q', '$log', '$window', '$timeout', '$http', '$interval', '$rootScope', '$uibModal', 'editableOptions', 'utils', 'dataService', '$window',
-    function AdminController($scope, $q, $log, $window, $timeout, $http, $interval, $rootScope, $uibModal, editableOptions, utils, dataService, $window) {
-
-        $(window).resize(function(){
-            $('#loginForm').css('margin-left',($window.innerWidth - $('#loginForm').innerWidth() - 200) + 'px');
-            $('#logoutForm').css('margin-left',($window.innerWidth - $('#logoutForm').innerWidth() - 250) + 'px');
-        });
-        $(window).resize();
+    function AdminController($scope, $q, $log, $window, $timeout, $http, $interval, $rootScope, $uibModal, editableOptions, utils, dataService) {
 
         $scope.animationsEnabled = true;
 

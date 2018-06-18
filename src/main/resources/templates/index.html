@@ -19,29 +19,37 @@
         <div class="container">
             <nav class="navbar navbar-inverse bg-inverse fixed-top">
                 <div class="navbar-inner row nav-bar-menu-rockit">
-                    <div class="pull-left">
-                        <a class="navbar-brand" href="#">
-                            <img src="/img/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
-                            <span>ROCKIT</span>
-                        </a>
-                    </div>
-                    <div id="loginForm" ng-show="user.username === ''">
-                        <form class="form-inline my-2 my-lg-0" ng-submit="login()">
-                            <input id="usernameInput" name="username" class="form-control mr-sm-2" type="text" placeholder="Username">
-                            <input id="passwordInput" name="password" class="form-control mr-sm-2" type="password" placeholder="Password">
-                            <button class="btn btn-outline-success btn-sm my-2 my-sm-0" type="submit">Sign in</button>
-                        </form>
-                    </div>
-                    <div id="logoutForm" ng-show="user.username !== ''" class="logout-form">
-                        <form class="form-inline my-2 my-lg-0">
-                            <span type="text" class="menu-user-name" ng-bind="user.username"></span>
-                            <button class="btn btn-outline-success btn-sm my-2 my-sm-0" type="button" ng-click="logout()">Sign out</button>
-                        </form>
-                    </div>
+                    <table style="width:100%;">
+                        <tr>
+                            <td>
+                                <div>
+                                    <a class="navbar-brand" href="#">
+                                        <img src="/img/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
+                                        <span>ROCKIT</span>
+                                    </a>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="row pull-right" style="margin-right: 10px">
+                                    <div ng-show="user.username === ''">
+                                        <form class="form-inline my-2 my-lg-0" ng-submit="login()">
+                                            <input id="usernameInput" name="username" class="form-control mr-sm-2" type="text" placeholder="Username">
+                                            <input id="passwordInput" name="password" class="form-control mr-sm-2" type="password" placeholder="Password">
+                                            <button class="btn btn-outline-success btn-sm my-2 my-sm-0" type="submit">Sign in</button>
+                                        </form>
+                                    </div>
+                                    <div ng-show="user.username !== ''">
+                                        <form class="form-inline my-2 my-lg-0">
+                                            <span type="text" class="menu-user-name" ng-bind="user.username"></span>
+                                            <button class="btn btn-outline-success btn-sm my-2 my-sm-0" type="button" ng-click="logout()">Sign out</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
-
             </nav>
-
         </div>
 
         <div id="accordion" role="tablist" aria-multiselectable="true" ng-show="user.username !== ''">
