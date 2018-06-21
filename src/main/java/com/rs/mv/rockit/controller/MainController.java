@@ -24,11 +24,24 @@ public class MainController {
     private RDPGenerator rdpGenerator;
 
     @Autowired
-    public MainController(GroupDAO groupDAO, UserDAO userDAO, MachineService machineService, RDPGenerator rdpGenerator) {
+    public MainController(GroupDAO groupDAO, UserDAO userDAO, MachineService machineService, RDPGenerator rdpGenerator) throws DAOException {
         this.groupDAO = groupDAO;
         this.userDAO = userDAO;
         this.machineService = machineService;
         this.rdpGenerator = rdpGenerator;
+
+        // Create a new default user
+        if (userDAO.getAll().size() == 0) {
+            User defaultUser = new User();
+            defaultUser.setAdmin(true);
+            defaultUser.setEmail("rockit@rocketsoftware.com");
+            defaultUser.setEnabled(true);
+            defaultUser.setFullName("Administrator");
+            defaultUser.setUsername("admin");
+            defaultUser.setPassword("admin");
+            userDAO.save(defaultUser);
+        }
+
     }
 
     @RequestMapping(value = "/healthcheck", method = {RequestMethod.GET, RequestMethod.HEAD})
