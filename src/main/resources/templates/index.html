@@ -145,8 +145,12 @@
                                                 <button type="button" class="btn btn btn-sm"
                                                         ng-show="machine.usedBy == null || machine.usedBy == ''"
                                                         ng-click="grabMachine(machine)">Grab</button>
-                                                <button type="button" class="btn btn-secondary btn-sm" ng-show="machine.usedBy != null"
+                                                <button type="button" class="btn btn-secondary btn-xs" ng-show="machine.usedBy != null"
                                                         ng-click="sendMessage(machine.usedBy)"><i class="fa fa-envelope" aria-hidden="true"></i></button>
+                                                <button type="button" class="btn btn-secondary btn-xs" ng-show="machine.usedBy != null"
+                                                        ng-click="uploadFile()"><i class="fa fa-upload" aria-hidden="true"></i></button>
+                                                <button type="button" class="btn btn-secondary btn-xs" ng-show="machine.usedBy != null"
+                                                        ng-click="downloadFile()"><i class="fa fa-download" aria-hidden="true"></i></button>
                                                 <button type="button" class="btn btn-danger btn-sm" ng-click="releaseMachine(machine)"
                                                         ng-show="!(machine.usedBy == null || machine.usedBy == '')">Release</button>
                                             </div>

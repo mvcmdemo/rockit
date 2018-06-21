@@ -401,6 +401,14 @@ app.controller('rockitController', ['$scope', '$q', '$log', '$window', '$timeout
 
         };
 
+        $scope.uploadFile = function() {
+
+        };
+
+        $scope.downloadFile = function() {
+
+        };
+
         $rootScope.$on('http.error', function (event, status) {
             switch (status) {
 //				case  - 1:
