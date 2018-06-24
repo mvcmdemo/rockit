@@ -135,8 +135,10 @@
                                         <td ng-show="user.admin">
                                             <button type="button" class="btn btn-primary btn-xs" ng-click="editMachine(machine)"><i class="fa fa-edit" aria-hidden="true"></i></button>
                                             <button type="button" class="btn btn-danger btn-xs" ng-click="deleteMachine(machine)"><i class="fa fa-close" aria-hidden="true"></i></button>
-
-
+                                            <button type="button" class="btn btn-secondary btn-xs"
+                                                    ng-click="startScheduler(machine)" title="Open scheduler" data-toggle="tooltip">
+                                                <i class="fa fa-calendar" aria-hidden="true"></i>
+                                            </button>
                                         </td>
                                         <td>
                                             <div class="pull-right">
@@ -311,6 +313,7 @@
         <script src="js/controllers/UserEditorController.js"></script>
         <script src="js/controllers/terminalController.js"></script>
         <script src="js/controllers/SendMessageController.js"></script>
+        <script src="js/controllers/SchedulerController.js"></script>
 
         <script src="js/services/dataService.js"></script>
         <script src="js/services/messageService.js"></script>

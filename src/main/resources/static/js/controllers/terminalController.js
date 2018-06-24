@@ -19,7 +19,7 @@ app.controller('terminalController', function ($scope) {
         term.fit();
         term.writeln("Connecting to " + $scope.targetMachineHost + " ...");
         document.title = $scope.targetMachineHost;
-        var socket = io('http://localhost:8081/?machine_id=' + $scope.targetMachineID);
+        var socket = io('http://ams-vm-kk01.rocketsoftware.com:8081/?machine_id=' + $scope.targetMachineID);
 
         window.addEventListener('resize', function () {
             term.fit();
@@ -28,7 +28,7 @@ app.controller('terminalController', function ($scope) {
 
         socket.on('connect', function () {
             socket.emit('geometry', {cols : term.cols -1 , rows : term.rows - 1})
-        })
+        });
 
         term.on('data', function (data) {
             socket.emit('data', data);

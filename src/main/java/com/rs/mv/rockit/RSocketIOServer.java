@@ -39,7 +39,7 @@ public class RSocketIOServer {
         this.ctx = ctx;
         this.machineService = machineService;
         //this.serverName = network.getLocalHostName();
-        this.serverName = "localhost";
+        this.serverName = "ams-vm-kk01.rocketsoftware.com";
         receiverThreadPool = Executors.newCachedThreadPool();
         configureServer();
         startServer();

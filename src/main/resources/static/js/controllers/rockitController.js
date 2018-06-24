@@ -398,7 +398,26 @@ app.controller('rockitController', ['$scope', '$q', '$log', '$window', '$timeout
             , function () {
                 return false;
             });
+        };
 
+        $scope.startScheduler = function(machine) {
+            var modalInstance = $uibModal.open({
+                backdrop : false,
+                animation : $scope.animationsEnabled,
+                templateUrl : 'views/scheduler.html',
+                controller : 'SchedulerController',
+                size : 'lg',
+                resolve : {
+                    machine : function () {
+                        return machine;
+                    }
+                }
+            });
+            modalInstance.result.then(function (returnUser) {}
+
+                , function () {
+                    return false;
+                });
         };
 
         $scope.uploadFile = function() {
