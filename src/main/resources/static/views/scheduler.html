@@ -1,11 +1,14 @@
 <div class="modal-header">
-    <h3 class="modal-title">Scheduler for {{machine.name}}</h3>
+    <h3 class="modal-title">Scheduler for <span style="text-decoration: underline;">{{machine.name}}</span></h3>
 </div>
 
 <div class="modal-body col-12">
-    <!--<div>-->
-        <!--<input data-provide="datepicker">-->
-    <!--</div>-->
+    <div class="col-sm-10" style="margin-bottom: 10px">
+        <span><b>Choose the date: </b></span>
+        <input data-provide="datepicker">
+        <i class="fa fa-calendar" aria-hidden="true"></i>
+    </div>
+
     <form id="schedulerForm">
         <table class="table table-bordered table-striped">
 
@@ -17,7 +20,7 @@
                     <th>
                         <span>User</span>
                     </th>
-                    <th style="width: 20%">
+                    <th style="width: 13%">
 
                     </th>
                 </tr>
@@ -30,32 +33,89 @@
                     <td>
                         <span>Kirill Kostin</span>
                     </td>
-                    <td style="width: 20%">
-                        <button type="button" class="btn btn-primary btn-sm"
+                    <td style="width: 13%">
+                        <button type="button" class="btn btn-primary btn-xs"
                                 ng-click="">
-                            <span>Edit</span>
+                            <i class="fa fa-edit" aria-hidden="true"></i>
                         </button>
-                        <button type="button" class="btn btn-danger btn-sm"
+                        <button type="button" class="btn btn-danger btn-xs"
                                 ng-click="">
-                            <span>Cancel</span>
+                            <i class="fa fa-close" aria-hidden="true"></i>
                         </button>
                     </td>
                 </tr>
                 <tr>
                     <td style="width: 20%">
-                        <span>1:00 pm - 4:00 pm</span>
+                        <span>1:00 pm - 2:00 pm</span>
                     </td>
                     <td>
                         <span>Administrator</span>
                     </td>
-                    <td style="width: 20%">
-                        <button type="button" class="btn btn-primary btn-sm"
+                    <td style="width: 13%">
+                        <button type="button" class="btn btn-primary btn-xs"
                                 ng-click="">
-                            <span>Edit</span>
+                            <i class="fa fa-edit" aria-hidden="true"></i>
                         </button>
-                        <button type="button" class="btn btn-danger btn-sm"
+                        <button type="button" class="btn btn-danger btn-xs"
                                 ng-click="">
-                            <span>Cancel</span>
+                            <i class="fa fa-close" aria-hidden="true"></i>
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style="width: 20%">
+                        <span>3:30 pm - 4:30 pm</span>
+                    </td>
+                    <td>
+                        <span>Aigul Zhulmuhametova</span>
+                    </td>
+                    <td style="width: 13%">
+                        <button type="button" class="btn btn-primary btn-xs"
+                                ng-click="">
+                            <i class="fa fa-edit" aria-hidden="true"></i>
+                        </button>
+                        <button type="button" class="btn btn-danger btn-xs"
+                                ng-click="">
+                            <i class="fa fa-close" aria-hidden="true"></i>
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style="width: 20%">
+                        <span>4:30 pm - 5:00 pm</span>
+                    </td>
+                    <td>
+                        <span>Tatyana Antropova</span>
+                    </td>
+                    <td style="width: 13%">
+                        <button type="button" class="btn btn-primary btn-xs"
+                                ng-click="">
+                            <i class="fa fa-edit" aria-hidden="true"></i>
+                        </button>
+                        <button type="button" class="btn btn-danger btn-xs"
+                                ng-click="">
+                            <i class="fa fa-close" aria-hidden="true"></i>
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style="width: 20%">
+                        <span>5:00 pm - 7:30 pm</span>
+                    </td>
+                    <td>
+                        <span>Anastasia Nesterenko</span>
+                    </td>
+                    <td style="width: 13%">
+                        <button type="button" class="btn btn-primary btn-xs"
+                                ng-click="">
+                            <i class="fa fa-edit" aria-hidden="true"></i>
+                        </button>
+                        <button type="button" class="btn btn-danger btn-xs"
+                                ng-click="">
+                            <i class="fa fa-close" aria-hidden="true"></i>
                         </button>
                     </td>
                 </tr>
