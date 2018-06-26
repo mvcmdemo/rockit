@@ -113,7 +113,7 @@ app.controller('rockitController', ['$scope', '$q', '$log', '$window', '$timeout
                 return true;
             }
             var isValid = false;
-            if ($scope.user !== '') {
+            if ($scope.user.username !== '') {
                 $scope.user.groups.forEach(function (group) {
                     var idx = machine.groups.findIndex(utils.isEqual, group.id);
                     if (idx > -1) {
